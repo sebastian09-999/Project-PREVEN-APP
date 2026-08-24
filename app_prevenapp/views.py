@@ -105,3 +105,16 @@ def crear_participaciones(request):
     ]
     ParticipacionActividad.objects.bulk_create(participaciones)
     return HttpResponse("Participaciones creadas exitosamente.")
+
+
+#Función mostrar datos en página
+
+def ver_todo(request):
+    context = {
+        'usuarios': Usuario.objects.all(),
+        'actividades': Actividad.objects.all(),
+        'contactos': ContactoEmergencia.objects.all(),
+        'historiales': HistorialChatbot.objects.all(),
+        'participaciones': ParticipacionActividad.objects.all(),
+    }
+    return render(request, 'ver_todo.html', context)

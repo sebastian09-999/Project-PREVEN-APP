@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen General de Datos</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h1>Reporte General del Sistema</h1>
+
+    <h2>Usuarios</h2>
+    <table>
+        <tr><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>EPS</th></tr>
+        {% for u in usuarios %}
+        <tr>
+            <td>{{ u.nombres }} {{ u.apellidos }}</td>
+            <td>{{ u.correo }}</td>
+            <td>{{ u.telefono }}</td>
+            <td>{{ u.eps }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay usuarios registrados.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Actividades</h2>
+    <table>
+        <tr><th>Nombre</th><th>Dificultad</th><th>Frecuencia</th><th>Duración</th></tr>
+        {% for a in actividades %}
+        <tr>
+            <td>{{ a.nombre }}</td>
+            <td>{{ a.nivel_dificultad }}</td>
+            <td>{{ a.frecuencia }}</td>
+            <td>{{ a.duracion }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay actividades registradas.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Contactos de Emergencia</h2>
+    <table>
+        <tr><th>Usuario</th><th>Contacto</th><th>Teléfono</th></tr>
+        {% for c in contactos %}
+        <tr>
+            <td>{{ c.usuario.nombres }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.telefono }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No hay contactos registrados.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Historial Chatbot</h2>
+    <table>
+        <tr><th>Usuario</th><th>Pregunta</th><th>Respuesta</th></tr>
+        {% for h in historiales %}
+        <tr>
+            <td>{{ h.usuario.nombres }}</td>
+            <td>{{ h.pregunta }}</td>
+            <td>{{ h.respuesta }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No hay historial de chat.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Participación en Actividades</h2>
+    <table>
+        <tr><th>Usuario</th><th>Actividad</th><th>Resultado</th></tr>
+        {% for p in participaciones %}
+        <tr>
+            <td>{{ p.usuario.nombres }}</td>
+            <td>{{ p.actividad.nombre }}</td>
+            <td>{{ p.resultado }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No hay participaciones registradas.</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

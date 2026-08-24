@@ -56,7 +56,8 @@ ROOT_URLCONF = 'pr_prevenapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['app_prevenapp/templates/app_prevenapp'],
+        'DIRS': ['app_prevenapp/templates/app_prevenapp',
+                 'pr_prevenapp/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

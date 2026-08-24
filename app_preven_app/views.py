@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Usuario, Especialidad, Profesional, Cita, Horario_profesional, Sala_chat
+# Importa la especialidad local de esta carpeta
+from .models import Especialidad
+
+# Importa el resto de los modelos desde la app principal
+from app_prevenapp.models import Usuario, Profesional, Cita, Horario_profesional, Sala_chat
 
 def insertar_datos_prueba(request):
     u1 = Usuario.objects.create(nombres="Carlos", apellidos="Pérez", correo="carlos.perez@gmail.com", telefono="3001234567", estado="Activo")
@@ -72,7 +76,7 @@ def ver_panel_completo(request):
                         <thead><tr><th>ID</th><th>Nombres</th><th>Apellidos</th><th>Correo Electrónico</th><th>Teléfono</th><th>Estado</th></tr></thead>
                         <tbody>"""
     for u in usuarios:
-        html += f"<tr><td><b>#{u.id}</b></td><td>{u.nombres}</td><td>{u.apellidos}</td><td>{u.correo}</td><td>{u.telefono}</td><td><span class='badge-active'>{u.estado}</span></td></tr>"
+        html += f"<tr><td><b>#{u.idUsuario}</b></td><td>{u.nombres}</td><td>{u.apellidos}</td><td>{u.correo}</td><td>{u.telefono}</td><td><span class='badge-active'>{u.estado}</span></td></tr>"
     html += """
                         </tbody>
                     </table>

@@ -1,35 +1,84 @@
 from django.db import models
 
-# 1. Tabla Usuario (Pacientes / Clientes)
+
+class Rol(models.Model):
+    idRol = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=45)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Categoria(models.Model):
+    idCategoria = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=45)
+
+    def __str__(self):
+        return self.nombre
+
+
 class Usuario(models.Model):
-    nombres = models.CharField(max_length=100)
-    apellidos = models.CharField(max_length=100)
-    correo = models.EmailField(unique=True)
+    idUsuario = models.AutoField(primary_key=True)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='usuarios')
+    nombres = models.CharField(max_length=45)
+    apellidos = models.CharField(max_length=45)
+    correo = models.CharField(max_length=100)
     telefono = models.CharField(max_length=20)
-    estado = models.CharField(max_length=20, default="Activo")
+    edad = models.IntegerField()
+    sexo = models.CharField(max_length=20)
+    nivel_educativo = models.CharField(max_length=45)
+    eps = models.CharField(max_length=45)
+    contrasena = models.CharField(max_length=255)
+    rh = models.CharField(max_length=10)
+    estado = models.CharField(max_length=20)
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
 
-# 2. Tabla Especialidad
-class Especialidad(models.Model):
+
+class ContactoEmergencia(models.Model):
+    idContacto_Emergencia = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='contactos_emergencia')
+    nombre = models.CharField(max_length=45)
+    telefono = models.CharField(max_length=20)
+    correo = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.nombre} (Contacto de {self.usuario.nombres})"
+
+
+class HistorialChatbot(models.Model):
+    idHistorial_chat = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='historial_chatbot')
+    pregunta = models.TextField()
+    respuesta = models.TextField()
+    fecha = models.DateTimeField()
+
+    def __str__(self):
+        return f"Chat de {self.usuario.nombres} - {self.fecha.strftime('%Y-%m-%d')}"
+
+
+class Actividad(models.Model):
+    idActividad = models.AutoField(primary_key=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='actividades')
     nombre = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nombre
 
-# 3. Tabla Profesional (Relacionada con Usuario y Especialidad)
+
+# Conexión con Especialidad que reside en app_preven_app
 class Profesional(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='perfil_profesional')
-    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, related_name='profesionales')
+    especialidad = models.ForeignKey('app_preven_app.Especialidad', on_delete=models.CASCADE)
     documento_identidad = models.CharField(max_length=20)
     credencial_profesional = models.CharField(max_length=50)
     estado = models.CharField(max_length=20, default="Disponible")
 
     def __str__(self):
-        return f"Dr(a). {self.usuario.apellidos} - {self.especialidad.nombre}"
+        return f"Dr(a). {self.usuario.apellidos}"
 
-# 4. Tabla Cita (Relacionada con Usuario/Paciente y Profesional)
+
 class Cita(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='citas_paciente')
     profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name='citas_medico')
@@ -38,9 +87,9 @@ class Cita(models.Model):
     estado = models.CharField(max_length=20, default="Pendiente")
 
     def __str__(self):
-        return f"Cita #{self.id} - Paciente: {self.usuario.nombres} con {self.profesional.usuario.apellidos}"
+        return f"Cita #{self.id} - Paciente: {self.usuario.nombres}"
 
-# 5. Tabla Horario_profesional (Relacionada con Profesional)
+
 class Horario_profesional(models.Model):
     profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name='horarios')
     dias_semana = models.CharField(max_length=100)
@@ -51,12 +100,24 @@ class Horario_profesional(models.Model):
     def __str__(self):
         return f"Horario Dr(a). {self.profesional.usuario.apellidos} ({self.dias_semana})"
 
-# 6. Tabla Sala_chat (Relacionada con Profesional)
+
 class Sala_chat(models.Model):
     profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name='salas_chat')
     tema = models.CharField(max_length=150)
     descripcion = models.TextField()
-    estado = models.CharField(max_length=20, default="Activa")
+    estado = models.CharField(max_length=20, default="Activo")
+    fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Sala: {self.tema} - {self.profesional.usuario.apellidos}"
+        return f"Sala: {self.tema}"
+
+
+class ParticipacionActividad(models.Model):
+    idParticipacion_actividad = models.AutoField(primary_key=True)
+    actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, related_name='participaciones')
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='participaciones_actividad')
+    resultado = models.CharField(max_length=255)
+    fecha = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.usuario.nombres} - {self.actividad.nombre}"
