@@ -1,11 +1,958 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Preven App - Decisiones Informadas, Futuro Seguro</title>
+    <style>
+        /* Modern Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --primary-light: #EEF2FF;
+            --secondary: #0D9488;
+            --secondary-hover: #0F766E;
+            --secondary-light: #CCFBF1;
+            --accent: #F43F5E;
+            --dark: #0F172A;
+            --text: #334155;
+            --text-muted: #64748B;
+            --bg: #F8FAFC;
+            --white: #FFFFFF;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --hover-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.15), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Sticky Glassmorphism Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 16px 0;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #6366F1);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 1.5px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            position: relative;
+            background: radial-gradient(circle at 10% 20%, rgba(238, 242, 255, 0.8) 0%, rgba(240, 253, 250, 0.5) 90%);
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .hero-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 48px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 620px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--secondary-light);
+            color: var(--secondary-hover);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-card-preview {
+            flex: 1;
+            max-width: 480px;
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--hover-shadow);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            position: relative;
+        }
+
+        .preview-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+
+        .preview-badge-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .preview-text h4 {
+            color: var(--dark);
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .preview-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .preview-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-item {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary-hover);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Pillars Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 50px;
+        }
+
+        .section-subtitle {
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            color: var(--dark);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 28px;
+        }
+
+        .pillar-card {
+            background: var(--white);
+            padding: 32px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--card-shadow);
+            border: 1px solid #F1F5F9;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+            border-color: rgba(79, 70, 229, 0.2);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .pillar-card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .icon-blue { background: #EEF2FF; color: var(--primary); }
+        .icon-teal { background: #E6FFFA; color: var(--secondary); }
+        .icon-rose { background: #FFE4E6; color: var(--accent); }
+        .icon-purple { background: #F3E8FF; color: #9333EA; }
+
+        .pillar-card h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .pillar-card p {
+            font-size: 0.925rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .card-link:hover {
+            gap: 10px;
+            color: var(--primary-hover);
+        }
+
+        /* Banner Section */
+        .banner-section {
+            background: linear-gradient(135deg, var(--dark) 0%, #1E293B 100%);
+            color: var(--white);
+            padding: 60px 0;
+            border-radius: var(--radius-lg);
+            margin: 20px auto 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            text-align: center;
+        }
+
+        .banner-item h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-light);
+            margin-bottom: 6px;
+        }
+
+        .banner-item p {
+            font-size: 0.95rem;
+            color: #94A3B8;
+        }
+
+        /* FAQ Accordion Section */
+        .faq-section {
+            background-color: var(--white);
+            padding: 80px 0;
+            border-top: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        details summary {
+            padding: 20px 24px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary:hover {
+            color: var(--primary);
+        }
+
+        .faq-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid #CBD5E1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
+            color: var(--text);
+        }
+
+        details[open] summary .faq-icon {
+            transform: rotate(180deg);
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid #E2E8F0;
+            background: var(--white);
+        }
+
+        .faq-content {
+            padding: 20px 24px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            background: var(--white);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: #94A3B8;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            color: var(--white);
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 320px;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-light);
+        }
+
+        .emergency-box {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: #FDA4AF;
+            font-size: 0.85rem;
+        }
+
+        .emergency-box strong {
+            display: block;
+            color: #FFF;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-grid {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-card-preview {
+                width: 100%;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p> BEINVENIDO A PREVEN APP</P>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <div class="logo-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                Preven <span>App</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Pilares</a></li>
+                <li><a href="#faq">Preguntas Frecuentes</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="{% url 'registro_usuario' %}" class="btn">Ingresar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                    Espacio Seguro y Confidencial
+                </div>
+                <h1 class="hero-title">Tu futuro lo construyes con <span>decisiones informadas</span></h1>
+                <p class="hero-description">
+                    Preven App es tu plataforma amiga sobre educación sexual integral, salud reproductiva y proyecto de vida. Orientación clara, sin prejuicios y al alcance de tu mano.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#servicios" class="btn btn-primary">Explorar Recursos</a>
+                    <a href="#faq" class="btn btn-secondary">Conocer Más</a>
+                </div>
+            </div>
+
+            <div class="hero-card-preview">
+                <div class="preview-badge">
+                    <div class="preview-badge-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <div class="preview-text">
+                        <h4>Acompañamiento Libre de Prejuicios</h4>
+                        <p>Aprende, consulta y resuelve tus dudas con total privacidad.</p>
+                    </div>
+                </div>
+
+                <div class="preview-stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Confidencial</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Acceso Educativo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Pillars Section -->
+    <section id="servicios" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">¿Qué te ofrecemos?</span>
+                <h2 class="section-title">Herramientas para tu Bienestar</h2>
+                <p class="section-desc">Diseñamos espacios accesibles para acompañarte en cada etapa de tus decisiones.</p>
+            </div>
+
+            <div class="pillars-grid">
+                <!-- Card 1 -->
+                <div class="pillar-card">
+                    <div class="card-icon icon-blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Educación Clara</h3>
+                    <p>Guías sencillas sobre métodos anticonceptivos, mitos, realidades y salud sexual y reproductiva.</p>
+                    <a href="#" class="card-link">Saber más &rarr;</a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="pillar-card">
+                    <div class="card-icon icon-teal">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>Orientación Segura</h3>
+                    <p>Canal directo y anónimo para resolver inquietudes con información veraz y verificada.</p>
+                    <a href="#" class="card-link">Saber más &rarr;</a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="pillar-card">
+                    <div class="card-icon icon-rose">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Directorio de Apoyo</h3>
+                    <p>Encuentra centros de salud, líneas de atención e instituciones de apoyo cercanas a ti.</p>
+                    <a href="#" class="card-link">Saber más &rarr;</a>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="pillar-card">
+                    <div class="card-icon icon-purple">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <h3>Proyecto de Vida</h3>
+                    <p>Herramientas prácticas para planificar tus metas personales, educativas y profesionales.</p>
+                    <a href="#" class="card-link">Saber más &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Impact Stats -->
+    <div class="container">
+        <section class="banner-section">
+            <div class="container">
+                <div class="banner-grid">
+                    <div class="banner-item">
+                        <h3>+1,000</h3>
+                        <p>Jóvenes Orientados</p>
+                    </div>
+                    <div class="banner-item">
+                        <h3>100%</h3>
+                        <p>Privacidad Garantizada</p>
+                    </div>
+                    <div class="banner-item">
+                        <h3>24/7</h3>
+                        <p>Información Disponible</p>
+                    </div>
+                    <div class="banner-item">
+                        <h3>0%</h3>
+                        <p>Prejuicios o Estigmas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FAQ Accordion Section -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Dudas Frecuentes</span>
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+                <p class="section-desc">Aquí respondemos las inquietudes más comunes sobre el uso de Preven App.</p>
+            </div>
+
+            <div class="faq-container">
+                <!-- Question 1 -->
+                <div class="faq-item">
+                    <details>
+                        <summary>
+                            ¿Mis datos y consultas en Preven App son confidenciales?
+                            <div class="faq-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </summary>
+                        <div class="faq-content">
+                            <p>¡Sí, totalmente! En Preven App garantizamos la máxima privacidad. No compartimos tu información personal con terceros y puedes navegar por los contenidos educativos de manera totalmente anónima.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="faq-item">
+                    <details>
+                        <summary>
+                            ¿Tiene algún costo usar los recursos de la plataforma?
+                            <div class="faq-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </summary>
+                        <div class="faq-content">
+                            <p>No. Todos los recursos, guías informativas, herramientas de autoconocimiento y directorio de orientación son 100% gratuitos y de libre acceso para adolescentes y jóvenes.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="faq-item">
+                    <details>
+                        <summary>
+                            ¿Qué tipo de temas puedo consultar en la aplicación?
+                            <div class="faq-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </summary>
+                        <div class="faq-content">
+                            <p>Encontrarás información objetiva y científica sobre anatomía, métodos de prevención del embarazo, infecciones de transmisión sexual (ITS), consentimiento, derechos sexuales y orientación para construir tu proyecto de vida.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="faq-item">
+                    <details>
+                        <summary>
+                            ¿Qué hago si necesito orientación médica o psicológica inmediata?
+                            <div class="faq-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </summary>
+                        <div class="faq-content">
+                            <p>En la sección "Directorio de Apoyo" encontrarás líneas telefónicas oficiales de ayuda gratuita de salud pública disponible las 24 horas, así como la ubicación de centros asistenciales cercanos a tu comunidad.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Preven App
+                    </h3>
+                    <p>Plataforma educativa para la prevención del embarazo en adolescentes y el empoderamiento juvenil a través de decisiones informadas.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#servicios">Pilares</a></li>
+                        <li><a href="#faq">Preguntas Frecuentes</a></li>
+                        <li><a href="#ingresar">Ingreso a Sistema</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Guía Anticonceptiva</a></li>
+                        <li><a href="#">Derechos Sexuales</a></li>
+                        <li><a href="#">Mi Proyecto de Vida</a></li>
+                        <li><a href="#">Directorio de Salud</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Ayuda Inmediata</h4>
+                    <div class="emergency-box">
+                        <strong>¿Necesitas hablar con alguien?</strong>
+                        Línea Nacional Gratuita de Salud y Orientación: 106 / 155
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Preven App. Todos los derechos reservados. Desarrollado para la prevención y el bienestar juvenil.</p>
+                <p>Tu privacidad es nuestra prioridad.</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
