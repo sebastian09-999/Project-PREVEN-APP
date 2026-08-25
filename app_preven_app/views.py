@@ -7,12 +7,9 @@ from app_prevenapp.models import Rol, Usuario, Profesional, Cita, Horario_profes
 
 
 def insertar_datos_prueba(request):
-    # 1. Obtener los roles existentes desde la BD
-    # Nota: Asegúrate de escribir el nombre exacto como guardaste el rol (ej. "Profesional", "Paciente")
     r_profesional = Rol.objects.get(nombre="Profesional")
     r_paciente = Rol.objects.get(nombre="Usuario")
 
-    # 2. Crear usuarios asignándoles el objeto de rol obtenido
     u1 = Usuario.objects.create(
         nombres="Carlos", apellidos="Pérez", correo="carlos.perez@gmail.com", 
         telefono="3001234567", edad=30, sexo="Masculino", contrasena="123456", 
@@ -33,13 +30,11 @@ def insertar_datos_prueba(request):
         telefono="3150001122", edad=25, sexo="Femenino", contrasena="123456", 
         rh="B+", estado="Activo", rol=r_paciente
     )
-
-    # 3. Crear o consultar especialidades (usamos get_or_create para evitar duplicar si vuelves a cargar la URL)
+  
     e1, _ = Especialidad.objects.get_or_create(nombre="Psicología Clínica")
     e2, _ = Especialidad.objects.get_or_create(nombre="Psiquiatría")
     e3, _ = Especialidad.objects.get_or_create(nombre="Psicopedagogía")
 
-    # 4. Crear el resto de registros asociando las instancias
     p1 = Profesional.objects.create(usuario=u1, especialidad=e1, documento_identidad="1098765432", credencial_profesional="PSI-9921", estado="Disponible")
     p2 = Profesional.objects.create(usuario=u2, especialidad=e2, documento_identidad="1054321987", credencial_profesional="PSQ-4412", estado="Disponible")
 
