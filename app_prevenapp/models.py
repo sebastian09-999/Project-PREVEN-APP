@@ -26,7 +26,6 @@ class Usuario(models.Model):
     telefono = models.CharField(max_length=20)
     edad = models.IntegerField()
     sexo = models.CharField(max_length=20)
-    nivel_educativo = models.CharField(max_length=45)
     eps = models.CharField(max_length=45)
     contrasena = models.CharField(max_length=255)
     rh = models.CharField(max_length=10)
