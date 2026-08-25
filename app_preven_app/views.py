@@ -2,19 +2,44 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # Importa la especialidad local de esta carpeta
 from .models import Especialidad
-
 # Importa el resto de los modelos desde la app principal
-from app_prevenapp.models import Usuario, Profesional, Cita, Horario_profesional, Sala_chat
+from app_prevenapp.models import Rol, Usuario, Profesional, Cita, Horario_profesional, Sala_chat
+
 
 def insertar_datos_prueba(request):
-    u1 = Usuario.objects.create(nombres="Carlos", apellidos="Pérez", correo="carlos.perez@gmail.com", telefono="3001234567", estado="Activo")
-    u2 = Usuario.objects.create(nombres="María", apellidos="Gómez", correo="maria.gomez@gmail.com", telefono="3119876543", estado="Activo")
-    u3 = Usuario.objects.create(nombres="Juan", apellidos="Rodríguez", correo="juan.rodriguez@gmail.com", telefono="3205554433", estado="Activo")
-    u4 = Usuario.objects.create(nombres="Ana", apellidos="Martínez", correo="ana.martinez@gmail.com", telefono="3150001122", estado="Activo")
+    # 1. Obtener los roles existentes desde la BD
+    # Nota: Asegúrate de escribir el nombre exacto como guardaste el rol (ej. "Profesional", "Paciente")
+    r_profesional = Rol.objects.get(nombre="Profesional")
+    r_paciente = Rol.objects.get(nombre="Usuario")
 
-    e1 = Especialidad.objects.create(nombre="Psicología Clínica")
-    e2 = Especialidad.objects.create(nombre="Psiquiatría")
+    # 2. Crear usuarios asignándoles el objeto de rol obtenido
+    u1 = Usuario.objects.create(
+        nombres="Carlos", apellidos="Pérez", correo="carlos.perez@gmail.com", 
+        telefono="3001234567", edad=30, sexo="Masculino", contrasena="123456", 
+        rh="O+", estado="Activo", rol=r_profesional
+    )
+    u2 = Usuario.objects.create(
+        nombres="María", apellidos="Gómez", correo="maria.gomez@gmail.com", 
+        telefono="3119876543", edad=28, sexo="Femenino", contrasena="123456", 
+        rh="A+", estado="Activo", rol=r_profesional
+    )
+    u3 = Usuario.objects.create(
+        nombres="Juan", apellidos="Rodríguez", correo="juan.rodriguez@gmail.com", 
+        telefono="3205554433", edad=35, sexo="Masculino", contrasena="123456", 
+        rh="O-", estado="Activo", rol=r_paciente
+    )
+    u4 = Usuario.objects.create(
+        nombres="Ana", apellidos="Martínez", correo="ana.martinez@gmail.com", 
+        telefono="3150001122", edad=25, sexo="Femenino", contrasena="123456", 
+        rh="B+", estado="Activo", rol=r_paciente
+    )
 
+    # 3. Crear o consultar especialidades (usamos get_or_create para evitar duplicar si vuelves a cargar la URL)
+    e1, _ = Especialidad.objects.get_or_create(nombre="Psicología Clínica")
+    e2, _ = Especialidad.objects.get_or_create(nombre="Psiquiatría")
+    e3, _ = Especialidad.objects.get_or_create(nombre="Psicopedagogía")
+
+    # 4. Crear el resto de registros asociando las instancias
     p1 = Profesional.objects.create(usuario=u1, especialidad=e1, documento_identidad="1098765432", credencial_profesional="PSI-9921", estado="Disponible")
     p2 = Profesional.objects.create(usuario=u2, especialidad=e2, documento_identidad="1054321987", credencial_profesional="PSQ-4412", estado="Disponible")
 
