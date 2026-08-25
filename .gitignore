@@ -1,0 +1,19 @@
+# Entornos virtuales (ignora la carpeta completa)
+v_prevenapp/
+venv/
+env/
+
+# Archivos compilados de Python y cachés
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos local (para no sobrescribir datos de otros equipos)
+db.sqlite3
+
+# Archivos de configuración de editores de código
+.vscode/
+.idea/
+
+# Variables de entorno con credenciales secretas
+.env
