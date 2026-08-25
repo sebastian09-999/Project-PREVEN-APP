@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 from datetime import date
 from .models import (Rol, Categoria, Usuario, ContactoEmergencia, 
-                     HistorialChatbot, Actividad, ParticipacionActividad)
+                     HistorialChatbot, Actividad, ParticipacionActividad,Profesional)
+from app_preven_app.models import Especialidad
 
 # 1. Crear Roles (Necesario para Usuario)
 def crear_roles(request):
@@ -121,41 +122,38 @@ def ver_todo(request):
 
 def registro_usuario(request):
     if request.method == 'POST':
-        # Capturar datos del formulario HTML
         rol_id = request.POST.get('rol')
-        nombres = request.POST.get('nombres')
-        apellidos = request.POST.get('apellidos')
-        correo = request.POST.get('correo')
-        telefono = request.POST.get('telefono')
-        edad = request.POST.get('edad')
-        sexo = request.POST.get('sexo')
-        nivel_educativo = request.POST.get('nivel_educativo')
-        eps = request.POST.get('eps')
-        contrasena = request.POST.get('contrasena')
-        rh = request.POST.get('rh')
-        estado = request.POST.get('estado', 'Activo')
-
-        # Buscar la instancia del Rol seleccionado
         rol_instancia = Rol.objects.get(idRol=rol_id)
+        nombre_rol = rol_instancia.nombre.lower()
 
-        # Crear y guardar el nuevo Usuario en la base de datos
-        Usuario.objects.create(
+        # Se capturan todos los campos comunes requeridos por la base de datos
+        nuevo_usuario = Usuario.objects.create(
             rol=rol_instancia,
-            nombres=nombres,
-            apellidos=apellidos,
-            correo=correo,
-            telefono=telefono,
-            edad=edad,
-            sexo=sexo,
-            nivel_educativo=nivel_educativo,
-            eps=eps,
-            contrasena=contrasena,
-            rh=rh,
-            estado=estado
+            nombres=request.POST.get('nombres'),
+            apellidos=request.POST.get('apellidos'),
+            correo=request.POST.get('correo'),
+            telefono=request.POST.get('telefono'),
+            edad=request.POST.get('edad'),          # <-- Agregado
+            sexo=request.POST.get('sexo'),          # <-- Agregado
+            contrasena=request.POST.get('contrasena'),
+            eps=request.POST.get('eps', ''),
+            rh=request.POST.get('rh', '')
         )
 
-        return redirect('ver_todo')  # Redirige a la vista deseada tras guardar
+        # Si el usuario seleccionado es Profesional
+        if 'profesional' in nombre_rol or 'medico' in nombre_rol:
+            esp_id = request.POST.get('especialidad')
+            especialidad_obj = Especialidad.objects.get(id=esp_id) if esp_id else None
 
-    # Si la petición es GET, enviamos los roles para el select
+            Profesional.objects.create(
+                usuario=nuevo_usuario,
+                especialidad=especialidad_obj,
+                documento_identidad=request.POST.get('documento_identidad'),
+                credencial_profesional=request.POST.get('credencial_profesional')
+            )
+
+        return redirect('ver_todo')  # Cambia por el nombre de tu URL de éxito
+
     roles = Rol.objects.all()
-    return render(request, 'registro.html', {'roles': roles})
+    especialidades = Especialidad.objects.all()
+    return render(request, 'registro.html', {'roles': roles, 'especialidades': especialidades})
