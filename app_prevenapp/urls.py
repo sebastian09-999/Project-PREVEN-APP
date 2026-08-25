@@ -10,5 +10,6 @@ urlpatterns = [
     path('crear-historial-chat/', views.crear_historial_chat, name='crear_historial_chat'),
     path('crear-actividades/', views.crear_actividades, name='crear_actividades'),
     path('crear-participaciones/', views.crear_participaciones, name='crear_participaciones'),
-    path('ver-todo/', views.ver_todo, name='ver_todo')
+    path('ver-todo/', views.ver_todo, name='ver_todo'),
+    path('registro/', views.registro_usuario, name='registro_usuario'),
 ]

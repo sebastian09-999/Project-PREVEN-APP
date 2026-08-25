@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import date
@@ -9,9 +9,8 @@ from .models import (Rol, Categoria, Usuario, ContactoEmergencia,
 def crear_roles(request):
     roles = [
         Rol(nombre='Administrador'),
-        Rol(nombre='Paciente'),
+        Rol(nombre='Usuario'),
         Rol(nombre='Profesional'),
-        Rol(nombre='Soporte'),
         Rol(nombre='Invitado'),
     ]
     Rol.objects.bulk_create(roles)
@@ -32,17 +31,17 @@ def crear_categorias(request):
 # 3. Crear Usuarios
 def crear_usuarios(request):
     # Obtenemos un rol existente para asociarlo (Asegúrate de ejecutar crear_roles primero)
-    rol_paciente = Rol.objects.filter(nombre='Paciente').first()
+    rol_usuario = Rol.objects.filter(nombre='Usuario').first()
     
-    if not rol_paciente:
+    if not rol_usuario:
         return HttpResponse("Error: Debes crear los roles primero.")
 
     usuarios = [
-        Usuario(rol=rol_paciente, nombres='Juan', apellidos='Perez', correo='juan@mail.com', telefono='3001234567', edad=25, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='O+', estado='Activo'),
-        Usuario(rol=rol_paciente, nombres='Maria', apellidos='Gomez', correo='maria@mail.com', telefono='3007654321', edad=30, sexo='F', nivel_educativo='Secundaria', eps='Sanitas', contrasena='1234', rh='A+', estado='Activo'),
-        Usuario(rol=rol_paciente, nombres='Carlos', apellidos='Lopez', correo='carlos@mail.com', telefono='3109876543', edad=40, sexo='M', nivel_educativo='Postgrado', eps='Compensar', contrasena='1234', rh='B-', estado='Inactivo'),
-        Usuario(rol=rol_paciente, nombres='Ana', apellidos='Diaz', correo='ana@mail.com', telefono='3201239876', edad=22, sexo='F', nivel_educativo='Técnico', eps='Salud Total', contrasena='1234', rh='O-', estado='Activo'),
-        Usuario(rol=rol_paciente, nombres='Luis', apellidos='Ramirez', correo='luis@mail.com', telefono='3154567890', edad=28, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='AB+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Juan', apellidos='Perez', correo='juan@mail.com', telefono='3001234567', edad=25, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='O+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Maria', apellidos='Gomez', correo='maria@mail.com', telefono='3007654321', edad=30, sexo='F', nivel_educativo='Secundaria', eps='Sanitas', contrasena='1234', rh='A+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Carlos', apellidos='Lopez', correo='carlos@mail.com', telefono='3109876543', edad=40, sexo='M', nivel_educativo='Postgrado', eps='Compensar', contrasena='1234', rh='B-', estado='Inactivo'),
+        Usuario(rol=rol_usuario, nombres='Ana', apellidos='Diaz', correo='ana@mail.com', telefono='3201239876', edad=22, sexo='F', nivel_educativo='Técnico', eps='Salud Total', contrasena='1234', rh='O-', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Luis', apellidos='Ramirez', correo='luis@mail.com', telefono='3154567890', edad=28, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='AB+', estado='Activo'),
     ]
     Usuario.objects.bulk_create(usuarios)
     return HttpResponse("Usuarios creados exitosamente.")
@@ -118,3 +117,45 @@ def ver_todo(request):
         'participaciones': ParticipacionActividad.objects.all(),
     }
     return render(request, 'ver_todo.html', context)
+
+
+def registro_usuario(request):
+    if request.method == 'POST':
+        # Capturar datos del formulario HTML
+        rol_id = request.POST.get('rol')
+        nombres = request.POST.get('nombres')
+        apellidos = request.POST.get('apellidos')
+        correo = request.POST.get('correo')
+        telefono = request.POST.get('telefono')
+        edad = request.POST.get('edad')
+        sexo = request.POST.get('sexo')
+        nivel_educativo = request.POST.get('nivel_educativo')
+        eps = request.POST.get('eps')
+        contrasena = request.POST.get('contrasena')
+        rh = request.POST.get('rh')
+        estado = request.POST.get('estado', 'Activo')
+
+        # Buscar la instancia del Rol seleccionado
+        rol_instancia = Rol.objects.get(idRol=rol_id)
+
+        # Crear y guardar el nuevo Usuario en la base de datos
+        Usuario.objects.create(
+            rol=rol_instancia,
+            nombres=nombres,
+            apellidos=apellidos,
+            correo=correo,
+            telefono=telefono,
+            edad=edad,
+            sexo=sexo,
+            nivel_educativo=nivel_educativo,
+            eps=eps,
+            contrasena=contrasena,
+            rh=rh,
+            estado=estado
+        )
+
+        return redirect('ver_todo')  # Redirige a la vista deseada tras guardar
+
+    # Si la petición es GET, enviamos los roles para el select
+    roles = Rol.objects.all()
+    return render(request, 'registro.html', {'roles': roles})

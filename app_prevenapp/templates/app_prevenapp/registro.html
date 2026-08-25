@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 24px;
+            font-size: 1.6rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .field-full {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #dcdfe6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #2c3e50;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        }
+
+        button[type="submit"] {
+            grid-column: span 2;
+            padding: 14px;
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.99);
+        }
+
+        @media (max-width: 500px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .field-full, button[type="submit"] {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>Registro de Usuario</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="field-full">
+                <label for="rol">Rol:</label>
+                <select id="rol" name="rol" required>
+                    {% for r in roles %}
+                        <option value="{{ r.idRol }}">{{ r.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <input type="text" name="nombres" placeholder="Nombres" required>
+            <input type="text" name="apellidos" placeholder="Apellidos" required>
+            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+            <input type="number" name="edad" placeholder="Edad" required>
+            <input type="text" name="sexo" placeholder="Sexo" required>
+            <input type="text" name="nivel_educativo" placeholder="Nivel Educativo" required>
+            <input type="text" name="eps" placeholder="EPS" required>
+            <input type="password" name="contrasena" placeholder="Contraseña" required>
+            <input type="text" name="rh" placeholder="RH (Ej: O+)" required>
+
+            <button type="submit">Guardar Registro</button>
+        </form>
+    </div>
+
+</body>
+</html>
