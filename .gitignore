@@ -17,3 +17,9 @@ db.sqlite3
 
 # Variables de entorno con credenciales secretas
 .env
+
+# Entornos virtuales (ignora la carpeta completa)
+v_prevenapp/
+v_preven_app/
+venv/
+env/
