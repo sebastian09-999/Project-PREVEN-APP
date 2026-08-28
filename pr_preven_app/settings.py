@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_preven',
     'app_prevenapp',
     'app_preven_app',
+    'app_preven_juliana',
+    'app_preven'
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,8 @@ TEMPLATES = [
         'DIRS': ['app_preven/templates/app_preven',
                  'app_prevenapp/templates/app_prevenapp',
                  'app_preven_app',
-                 'pr_preven_app/templates'],
+                 'pr_preven_app/templates',
+                 'app_preven_juliana/templates/app_preven'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
