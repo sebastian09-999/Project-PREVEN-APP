@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Tu aplicación:
     'app_preven',
+    'app_prevenapp',
+    'app_preven_app',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,10 @@ ROOT_URLCONF = 'pr_preven_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': ['app_preven/templates/app_preven',
+                 'app_prevenapp/templates/app_prevenapp',
+                 'app_preven_app',
+                 'pr_preven_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

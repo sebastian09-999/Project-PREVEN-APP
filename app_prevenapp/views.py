@@ -38,11 +38,11 @@ def crear_usuarios(request):
         return HttpResponse("Error: Debes crear los roles primero.")
 
     usuarios = [
-        Usuario(rol=rol_usuario, nombres='Juan', apellidos='Perez', correo='juan@mail.com', telefono='3001234567', edad=25, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='O+', estado='Activo'),
-        Usuario(rol=rol_usuario, nombres='Maria', apellidos='Gomez', correo='maria@mail.com', telefono='3007654321', edad=30, sexo='F', nivel_educativo='Secundaria', eps='Sanitas', contrasena='1234', rh='A+', estado='Activo'),
-        Usuario(rol=rol_usuario, nombres='Carlos', apellidos='Lopez', correo='carlos@mail.com', telefono='3109876543', edad=40, sexo='M', nivel_educativo='Postgrado', eps='Compensar', contrasena='1234', rh='B-', estado='Inactivo'),
-        Usuario(rol=rol_usuario, nombres='Ana', apellidos='Diaz', correo='ana@mail.com', telefono='3201239876', edad=22, sexo='F', nivel_educativo='Técnico', eps='Salud Total', contrasena='1234', rh='O-', estado='Activo'),
-        Usuario(rol=rol_usuario, nombres='Luis', apellidos='Ramirez', correo='luis@mail.com', telefono='3154567890', edad=28, sexo='M', nivel_educativo='Universitario', eps='Sura', contrasena='1234', rh='AB+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Juan', apellidos='Perez', correo='juan@mail.com', telefono='3001234567', edad=25, sexo='M',  eps='Sura', contrasena='1234', rh='O+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Maria', apellidos='Gomez', correo='maria@mail.com', telefono='3007654321', edad=30, sexo='F',  eps='Sanitas', contrasena='1234', rh='A+', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Carlos', apellidos='Lopez', correo='carlos@mail.com', telefono='3109876543', edad=40, sexo='M',  eps='Compensar', contrasena='1234', rh='B-', estado='Inactivo'),
+        Usuario(rol=rol_usuario, nombres='Ana', apellidos='Diaz', correo='ana@mail.com', telefono='3201239876', edad=22, sexo='F',  eps='Salud Total', contrasena='1234', rh='O-', estado='Activo'),
+        Usuario(rol=rol_usuario, nombres='Luis', apellidos='Ramirez', correo='luis@mail.com', telefono='3154567890', edad=28, sexo='M', eps='Sura', contrasena='1234', rh='AB+', estado='Activo'),
     ]
     Usuario.objects.bulk_create(usuarios)
     return HttpResponse("Usuarios creados exitosamente.")
@@ -81,11 +81,11 @@ def crear_actividades(request):
     categoria_base = Categoria.objects.first()
 
     actividades = [
-        Actividad(categoria=categoria_base, nombre='Caminata', descripcion='Caminar 30 mins', objetivos='Mejorar cardio', instrucciones='Paso ligero', nivel_dificultad='Bajo', recursos_multimedia='video1.mp4', frecuencia='Diaria', duracion='30 min', fecha=date.today(), creado_por=1),
-        Actividad(categoria=categoria_base, nombre='Meditación', descripcion='Respiración', objetivos='Reducir estrés', instrucciones='Cerrar ojos', nivel_dificultad='Bajo', recursos_multimedia='audio1.mp3', frecuencia='Diaria', duracion='15 min', fecha=date.today(), creado_por=1),
-        Actividad(categoria=categoria_base, nombre='Yoga', descripcion='Estiramientos', objetivos='Flexibilidad', instrucciones='Sigue el video', nivel_dificultad='Medio', recursos_multimedia='yoga.mp4', frecuencia='Semanal', duracion='45 min', fecha=date.today(), creado_por=1),
-        Actividad(categoria=categoria_base, nombre='Lectura', descripcion='Leer artículo', objetivos='Educación', instrucciones='Leer completo', nivel_dificultad='Bajo', recursos_multimedia='doc.pdf', frecuencia='Semanal', duracion='20 min', fecha=date.today(), creado_por=1),
-        Actividad(categoria=categoria_base, nombre='Cuestionario', descripcion='Test de estado', objetivos='Evaluación', instrucciones='Responder honestamente', nivel_dificultad='Bajo', recursos_multimedia='form.link', frecuencia='Mensual', duracion='10 min', fecha=date.today(), creado_por=1),
+        Actividad(categoria=categoria_base, nombre='Caminata', descripcion='Caminar 30 mins', objetivos='Mejorar cardio', instrucciones='Paso ligero', nivel_dificultad='Bajo', recursos_multimedia='video1.mp4', frecuencia='Diaria', duracion='30 min', fecha=date.today(), creado_por_id=1),
+        Actividad(categoria=categoria_base, nombre='Meditación', descripcion='Respiración', objetivos='Reducir estrés', instrucciones='Cerrar ojos', nivel_dificultad='Bajo', recursos_multimedia='audio1.mp3', frecuencia='Diaria', duracion='15 min', fecha=date.today(), creado_por_id=1),
+        Actividad(categoria=categoria_base, nombre='Yoga', descripcion='Estiramientos', objetivos='Flexibilidad', instrucciones='Sigue el video', nivel_dificultad='Medio', recursos_multimedia='yoga.mp4', frecuencia='Semanal', duracion='45 min', fecha=date.today(), creado_por_id=1),
+        Actividad(categoria=categoria_base, nombre='Lectura', descripcion='Leer artículo', objetivos='Educación', instrucciones='Leer completo', nivel_dificultad='Bajo', recursos_multimedia='doc.pdf', frecuencia='Semanal', duracion='20 min', fecha=date.today(), creado_por_id=1),
+        Actividad(categoria=categoria_base, nombre='Cuestionario', descripcion='Test de estado', objetivos='Evaluación', instrucciones='Responder honestamente', nivel_dificultad='Bajo', recursos_multimedia='form.link', frecuencia='Mensual', duracion='10 min', fecha=date.today(), creado_por_id=1),
     ]
     Actividad.objects.bulk_create(actividades)
     return HttpResponse("Actividades creadas exitosamente.")

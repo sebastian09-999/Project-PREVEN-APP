@@ -58,9 +58,18 @@ class HistorialChatbot(models.Model):
 
 
 class Actividad(models.Model):
-    idActividad = models.AutoField(primary_key=True)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='actividades')
-    nombre = models.CharField(max_length=100)
+    
+    nombre = models.CharField(max_length=150, null=True, blank=True)
+    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+    objetivos = models.TextField(null=True, blank=True)
+    instrucciones = models.TextField(null=True, blank=True)
+    nivel_dificultad = models.CharField(max_length=50, null=True, blank=True)
+    recursos_multimedia = models.CharField(max_length=255, null=True, blank=True)
+    frecuencia = models.CharField(max_length=50, null=True, blank=True)
+    duracion = models.CharField(max_length=50, null=True, blank=True)
+    fecha = models.DateField(auto_now_add=True)
+    creado_por = models.ForeignKey('Usuario', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.nombre
