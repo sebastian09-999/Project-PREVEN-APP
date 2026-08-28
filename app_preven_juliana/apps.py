@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class AppPrevenConfig(AppConfig):
-    name = 'app_preven'
+    name = 'app_preven_juliana'
