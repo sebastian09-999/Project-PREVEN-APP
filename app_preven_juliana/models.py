@@ -64,3 +64,13 @@ class Tip(models.Model):
     def __str__(self):
         return self.titulo
     
+    #profesional (error)
+class Profesional(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profesionales')
+    # Apunta a la otra app como indica el error anterior:
+    especialidad = models.ForeignKey('app_preven_app.Especialidad', on_delete=models.CASCADE, related_name='profesionales')
+    registro_profesional = models.CharField(max_length=50, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - Especialista"
