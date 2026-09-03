@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app_preven',
     'app_prevenapp',
     'app_preven_app',
+    'app_alejandra',
 ]
 
 MIDDLEWARE = [
