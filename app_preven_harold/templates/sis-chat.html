@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevenApp - Chats Médicos y Soporte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rosa-pastel': '#f8ecee',
+                        'rosa-medio': '#f3d1d9',
+                        'rosa-accent': '#f4a8bc',
+                        'lila-suave': '#e6e6fa',
+                        'lila-medio': '#d8b4e2',
+                        'lila-oscuro': '#8b6b93',
+                        'lila-profundo': '#5a3d62',
+                        'texto-oscuro': '#3d2e40',
+                        'texto-suave': '#735f78',
+                        'verde-online': '#10b981',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 20px 40px rgba(139, 107, 147, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'bubble-sent': '0 4px 12px rgba(139, 107, 147, 0.15)',
+                        'bubble-rec': '0 4px 12px rgba(0, 0, 0, 0.03)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8ecee;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(243, 209, 217, 0.6) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(230, 230, 250, 0.8) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(248, 236, 238, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(216, 180, 226, 0.5) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(216, 180, 226, 0.5);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 107, 147, 0.6);
+        }
+
+        .chat-bubble-sent {
+            background: linear-gradient(135deg, #8b6b93 0%, #5a3d62 100%);
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble-received {
+            background: #ffffff;
+            border: 1px solid rgba(243, 209, 217, 0.6);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Smooth slide-in for messages */
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-message {
+            animation: messageAppear 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col p-2 sm:p-4 md:p-6 overflow-hidden text-texto-oscuro">
+
+    <div class="glass-container w-full h-full max-w-7xl mx-auto rounded-2xl md:rounded-3xl shadow-glass flex flex-col overflow-hidden relative">
+        
+        <!-- Header Nav Bar -->
+        <header class="h-16 px-4 md:px-6 border-b border-rosa-medio/50 flex items-center justify-between bg-white/40 backdrop-blur-md shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-lila-oscuro to-rosa-accent flex items-center justify-center text-white shadow-sm">
+                    <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-lila-profundo leading-tight">PrevenApp</h1>
+                    <p class="text-[11px] font-semibold text-texto-suave">Atención Médica & Prevención</p>
+                </div>
+            </div>
+
+            <!-- Header Status Badge / Actions -->
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-lila-suave/60 border border-lila-medio/40 text-xs text-lila-profundo font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-verde-online animate-pulse"></span>
+                    <span>En línea - Sistema de Salud Activo</span>
+                </div>
+                <button class="p-2 rounded-xl text-texto-suave hover:bg-rosa-medio/30 transition-colors relative" title="Notificaciones">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rosa-accent rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body: Sidebar + Active Chat -->
+        <div class="flex-1 flex overflow-hidden relative">
+
+            <aside id="chatSidebar" class="w-full md:w-80 lg:w-96 border-r border-rosa-medio/40 bg-white/30 backdrop-blur-md flex flex-col absolute md:relative inset-0 z-20 md:z-auto transition-transform duration-300 md:translate-x-0 bg-white md:bg-transparent">
+                
+                <!-- Sidebar Search & Header -->
+                <div class="p-4 border-b border-rosa-medio/40 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-base font-bold text-lila-profundo flex items-center space-x-2">
+                            <span>Mis Consultas</span>
+                            <span class="px-2 py-0.5 text-[11px] bg-lila-medio/40 text-lila-profundo rounded-full font-bold">3</span>
+                        </h2>
+                        <button class="p-1.5 rounded-lg bg-lila-suave/80 text-lila-oscuro hover:bg-lila-medio/50 transition-colors" title="Nuevo Chat">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-texto-suave/60"></i>
+                        <input 
+                            type="text" 
+                            id="searchChatInput"
+                            onkeyup="filterChats()"
+                            placeholder="Buscar doctor o especialidad..." 
+                            class="w-full pl-9 pr-4 py-2 bg-white/70 border border-rosa-medio/60 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-lila-medio/50 transition-all placeholder-texto-suave/50"
+                        >
+                    </div>
+                </div>
+
+                <!-- Chat List Items (Jinja2 / Django Loop Compatible with Interactive Demo Fallback) -->
+                <div class="flex-1 overflow-y-auto p-3 space-y-1" id="chatList">
+                    
+                    {% for uc in usuario_chats %}
+                    <div class="chat-item flex items-center space-x-3 p-3 rounded-2xl cursor-pointer transition-all duration-200 border border-transparent {% if uc.chat.id == chat_activo.id %}bg-white shadow-sm border-rosa-medio/50{% else %}hover:bg-white/50{% endif %}"
+                         data-chat-id="{{ uc.chat.id }}"
+                         data-chat-name="{{ uc.chat.nombre }}">
+                        <div class="relative shrink-0">
+                            <div class="w-12 h-12 rounded-2xl bg-lila-medio/30 flex items-center justify-center font-bold text-lila-profundo text-sm border border-lila-medio/40">
+                                {{ uc.chat.nombre|slice:":2"|upper }}
+                            </div>
+                            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-verde-online border-2 border-white rounded-full"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <h3 class="text-xs font-bold text-texto-oscuro truncate">{{ uc.chat.nombre }}</h3>
+                                <span class="text-[10px] text-texto-suave">10:42 AM</span>
+                            </div>
+                            <p class="text-[11px] text-texto-suave truncate">Chat ID: {{ uc.chat.id }} • Presione para continuar</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div onclick="selectChat('Dra. Elena Rostova', 'Cardióloga General', 'DR', true)" 
+                         class="chat-card chat-item active-chat flex items-center space-x-3 p-3 rounded-2xl cursor-pointer transition-all duration-200 bg-white shadow-sm border border-rosa-medio/60">
+                        <div class="relative shrink-0">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=120&h=120" alt="Doctor" class="w-12 h-12 rounded-2xl object-cover border border-rosa-medio">
+                            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-verde-online border-2 border-white rounded-full"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <h3 class="text-xs font-bold text-texto-oscuro truncate">Dra. Elena Rostova</h3>
+                                <span class="text-[10px] text-lila-oscuro font-medium">10:42 AM</span>
+                            </div>
+                            <p class="text-[11px] text-texto-suave truncate font-medium">Los resultados de su electrocardiograma están...</p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectChat('Dr. Carlos Mendoza', 'Medicina General', 'CM', false)" 
+                         class="chat-card chat-item flex items-center space-x-3 p-3 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-white/60 border border-transparent">
+                        <div class="relative shrink-0">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-lila-medio to-rosa-medio flex items-center justify-center font-bold text-lila-profundo text-sm border border-rosa-medio/40">
+                                CM
+                            </div>
+                            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-300 border-2 border-white rounded-full"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <h3 class="text-xs font-bold text-texto-oscuro truncate">Dr. Carlos Mendoza</h3>
+                                <span class="text-[10px] text-texto-suave">Ayer</span>
+                            </div>
+                            <p class="text-[11px] text-texto-suave truncate">Recordatorio: Su cita está programada para...</p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectChat('Soporte Nutricional', 'Equipo PrevenApp', 'SN', true)" 
+                         class="chat-card chat-item flex items-center space-x-3 p-3 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-white/60 border border-transparent">
+                        <div class="relative shrink-0">
+                            <div class="w-12 h-12 rounded-2xl bg-rosa-medio/60 flex items-center justify-center font-bold text-lila-profundo text-sm border border-rosa-medio">
+                                <i data-lucide="apple" class="w-5 h-5 text-lila-oscuro"></i>
+                            </div>
+                            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-verde-online border-2 border-white rounded-full"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <h3 class="text-xs font-bold text-texto-oscuro truncate">Soporte Nutricional</h3>
+                                <span class="text-[10px] text-texto-suave">lun</span>
+                            </div>
+                            <p class="text-[11px] text-texto-suave truncate">¿Ha podido seguir la pauta recomendada?</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Django N:N Relationship Badge in Sidebar -->
+                <div class="p-3 border-t border-rosa-medio/40 bg-white/40">
+                    <div class="p-2.5 rounded-xl bg-lila-suave/50 border border-lila-medio/40 flex items-center justify-between text-[11px] text-lila-profundo">
+                        <span class="font-semibold flex items-center gap-1.5">
+                            <i data-lucide="database" class="w-3.5 h-3.5 text-lila-oscuro"></i>
+                            Relación N:N
+                        </span>
+                        <span class="bg-white/80 px-2 py-0.5 rounded-md font-mono text-[10px] text-lila-oscuro border border-lila-medio/30">usuario_chat</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 flex flex-col h-full bg-white/20 backdrop-blur-sm relative min-w-0">
+                
+                <!-- Chat Header -->
+                <div class="h-16 px-4 md:px-6 border-b border-rosa-medio/40 flex items-center justify-between bg-white/40 shrink-0">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <!-- Mobile back button to sidebar -->
+                        <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-xl hover:bg-rosa-medio/30 text-lila-oscuro">
+                            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        </button>
+
+                        <div class="relative shrink-0" id="activeChatAvatar">
+                            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=120&h=120" alt="Doctor" class="w-10 h-10 rounded-xl object-cover border border-rosa-medio">
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-verde-online border-2 border-white rounded-full"></span>
+                        </div>
+
+                        <div class="min-w-0">
+                            <h2 id="activeChatTitle" class="text-sm font-bold text-texto-oscuro truncate">
+                                {{ chat_activo.nombre|default:"Dra. Elena Rostova" }}
+                            </h2>
+                            <p id="activeChatSub" class="text-[11px] text-texto-suave flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-verde-online"></span>
+                                Cardióloga General • En línea
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
+                        <button onclick="showInfoToast('Iniciando llamada de voz securizada...')" class="p-2 rounded-xl text-lila-oscuro hover:bg-lila-suave/80 transition-colors" title="Llamada de voz">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="showInfoToast('Iniciando videoconsulta médica...')" class="p-2 rounded-xl text-lila-oscuro hover:bg-lila-suave/80 transition-colors" title="Videollamada">
+                            <i data-lucide="video" class="w-4 h-4"></i>
+                        </button>
+                        <div class="h-4 w-px bg-rosa-medio/60 mx-1"></div>
+                        <button onclick="showInfoToast('Expediente médico cifrado')" class="p-2 rounded-xl text-texto-suave hover:bg-rosa-medio/30 transition-colors" title="Ver Expediente">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+                    
+                    <!-- Timestamp Divider -->
+                    <div class="flex justify-center my-2">
+                        <span class="px-3 py-1 rounded-full bg-white/70 border border-rosa-medio/40 text-[10px] font-bold text-texto-suave/80 shadow-2xs">
+                            Hoy, 21 de Septiembre
+                        </span>
+                    </div>
+
+                    {% for mensaje in mensajes %}
+                        {% if mensaje.usuario.id == usuario_sesion.id %}
+                        <div class="flex justify-end animate-message">
+                            <div class="chat-bubble-sent text-white max-w-[80%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-sent space-y-1">
+                                <div class="flex justify-between items-center text-[10px] text-rosa-pastel/80 gap-4 mb-0.5">
+                                    <span class="font-bold">Tú</span>
+                                    <span>{{ mensaje.fecha|default:"10:40 AM" }}</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="flex justify-start animate-message">
+                            <div class="chat-bubble-received text-texto-oscuro max-w-[80%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-rec space-y-1">
+                                <div class="flex justify-between items-center text-[10px] text-lila-oscuro gap-4 mb-0.5">
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    <div class="flex justify-start animate-message">
+                        <div class="chat-bubble-received text-texto-oscuro max-w-[85%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-rec space-y-1">
+                            <div class="flex justify-between items-center text-[10px] text-lila-oscuro gap-4 mb-0.5">
+                                <span class="font-bold">Dra. Elena Rostova</span>
+                                <span>10:38 AM</span>
+                            </div>
+                            <p class="text-xs sm:text-sm leading-relaxed">Hola. He revisado tus últimos análisis de presión arterial y muestran una excelente mejoría. ¿Has sentido algún mareo o molestia con la nueva dosis?</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end animate-message">
+                        <div class="chat-bubble-sent text-white max-w-[85%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-sent space-y-1">
+                            <div class="flex justify-between items-center text-[10px] text-rosa-pastel/80 gap-4 mb-0.5">
+                                <span class="font-bold">Tú</span>
+                                <span>10:40 AM</span>
+                            </div>
+                            <p class="text-xs sm:text-sm leading-relaxed">¡Hola Dra.! No, para nada. Me he sentido muy bien y he estado registrando la presión dos veces al día como me indicó.</p>
+                            <div class="mt-2 p-2 rounded-xl bg-white/10 border border-white/20 flex items-center gap-2 text-xs">
+                                <i data-lucide="paperclip" class="w-3.5 h-3.5 text-rosa-pastel"></i>
+                                <span class="truncate">Registro_Presion_Septiembre.pdf</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-start animate-message">
+                        <div class="chat-bubble-received text-texto-oscuro max-w-[85%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-rec space-y-1">
+                            <div class="flex justify-between items-center text-[10px] text-lila-oscuro gap-4 mb-0.5">
+                                <span class="font-bold">Dra. Elena Rostova</span>
+                                <span>10:42 AM</span>
+                            </div>
+                            <p class="text-xs sm:text-sm leading-relaxed">Excelente trabajo. Mantengamos el tratamiento actual durante 3 semanas más. Si necesitas renovar la receta, puedes avisarme por aquí.</p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+
+                <!-- Toast notification inside chat -->
+                <div id="chatToast" class="hidden absolute top-20 left-1/2 -translate-x-1/2 px-4 py-2 bg-lila-profundo text-white text-xs font-semibold rounded-full shadow-lg border border-lila-medio/40 transition-all z-30 flex items-center space-x-2">
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-rosa-accent"></i>
+                    <span id="chatToastText">Notificación</span>
+                </div>
+
+                <div class="p-3 sm:p-4 bg-white/50 border-t border-rosa-medio/40 shrink-0">
+                    <form id="messageForm" onsubmit="sendMessage(event)" class="flex items-center space-x-2">
+                        
+                        <!-- Attach File Button -->
+                        <button type="button" onclick="showInfoToast('Adjuntar examen o documento PDF')" class="p-2.5 rounded-xl text-lila-oscuro hover:bg-lila-suave/80 transition-colors shrink-0" title="Adjuntar documento">
+                            <i data-lucide="paperclip" class="w-5 h-5"></i>
+                        </button>
+
+                        <!-- Message Input -->
+                        <div class="flex-1 relative">
+                            <input 
+                                type="text" 
+                                id="messageInput"
+                                name="texto" 
+                                placeholder="Escribe tu mensaje médico..." 
+                                required 
+                                autocomplete="off"
+                                class="w-full pl-4 pr-10 py-3 bg-white/90 border border-rosa-medio/80 rounded-2xl text-xs sm:text-sm text-texto-oscuro placeholder-texto-suave/50 focus:outline-none focus:ring-2 focus:ring-lila-medio transition-all shadow-inner"
+                            >
+                            <button type="button" onclick="insertEmoji('😊')" class="absolute right-3 top-1/2 -translate-y-1/2 text-texto-suave/60 hover:text-lila-oscuro transition-colors">
+                                <i data-lucide="smile" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Send Button -->
+                        <button 
+                            type="submit" 
+                            class="p-3 bg-gradient-to-tr from-lila-oscuro to-lila-profundo hover:from-lila-profundo hover:to-lila-oscuro text-white rounded-2xl shadow-md hover:shadow-btn-hover active:scale-95 transition-all shrink-0 flex items-center justify-center"
+                            title="Enviar mensaje"
+                        >
+                            <i data-lucide="send" class="w-4 h-4 transform rotate-45 -translate-x-0.5 translate-y-0.5"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Scroll messages to bottom on load
+        const messagesContainer = document.getElementById('messagesContainer');
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Toggle mobile sidebar view
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('chatSidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Show toast notification helper
+        function showInfoToast(text) {
+            const toast = document.getElementById('chatToast');
+            const toastText = document.getElementById('chatToastText');
+            toastText.textContent = text;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Insert Emoji into input
+        function insertEmoji(emoji) {
+            const input = document.getElementById('messageInput');
+            input.value += emoji + " ";
+            input.focus();
+        }
+
+        // Search Filter for Chats
+        function filterChats() {
+            const query = document.getElementById('searchChatInput').value.toLowerCase();
+            const items = document.querySelectorAll('.chat-card');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Dynamic Chat Selection Demo
+        function selectChat(name, role, initials, isOnline) {
+            document.getElementById('activeChatTitle').textContent = name;
+            document.getElementById('activeChatSub').innerHTML = `
+                <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-verde-online' : 'bg-gray-400'}"></span>
+                ${role} • ${isOnline ? 'En línea' : 'Ausente'}
+            `;
+
+            // Update Avatar
+            const avatarContainer = document.getElementById('activeChatAvatar');
+            if (name.includes('Elena')) {
+                avatarContainer.innerHTML = `
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=120&h=120" class="w-10 h-10 rounded-xl object-cover border border-rosa-medio">
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-verde-online border-2 border-white rounded-full"></span>
+                `;
+            } else {
+                avatarContainer.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl bg-lila-medio/40 flex items-center justify-center font-bold text-lila-profundo text-xs border border-lila-medio/50">
+                        ${initials}
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 ${isOnline ? 'bg-verde-online' : 'bg-gray-400'} border-2 border-white rounded-full"></span>
+                `;
+            }
+
+            showInfoToast(`Chat cambiado a ${name}`);
+        }
+
+        // Dynamic Send Message Simulation
+        function sendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Create sent message element
+            const msgHtml = `
+                <div class="flex justify-end animate-message">
+                    <div class="chat-bubble-sent text-white max-w-[85%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-sent space-y-1">
+                        <div class="flex justify-between items-center text-[10px] text-rosa-pastel/80 gap-4 mb-0.5">
+                            <span class="font-bold">Tú</span>
+                            <span>${timeNow}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm leading-relaxed">${escapeHtml(text)}</p>
+                    </div>
+                </div>
+            `;
+
+            messagesContainer.insertAdjacentHTML('beforeend', msgHtml);
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Auto reply simulation after 1.5s
+            setTimeout(() => {
+                const autoReply = `
+                    <div class="flex justify-start animate-message">
+                        <div class="chat-bubble-received text-texto-oscuro max-w-[85%] sm:max-w-[70%] p-3.5 rounded-2xl shadow-bubble-rec space-y-1">
+                            <div class="flex justify-between items-center text-[10px] text-lila-oscuro gap-4 mb-0.5">
+                                <span class="font-bold">${document.getElementById('activeChatTitle').textContent}</span>
+                                <span>${timeNow}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm leading-relaxed">Mensaje recibido correctamente. Un profesional de la salud lo revisará a la brevedad.</p>
+                        </div>
+                    </div>
+                `;
+                messagesContainer.insertAdjacentHTML('beforeend', autoReply);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1200);
+        }
+
+        // Helper to escape HTML characters
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"']/g, function (s) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[s];
+            });
+        }
+    </script>
+</body>
+</html>

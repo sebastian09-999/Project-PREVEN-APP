@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevenApp - Perfil Profesional</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rosa-pastel': '#f8ecee',
+                        'rosa-medio': '#f3d1d9',
+                        'rosa-accent': '#f4a8bc',
+                        'lila-suave': '#e6e6fa',
+                        'lila-medio': '#d8b4e2',
+                        'lila-oscuro': '#8b6b93',
+                        'lila-profundo': '#5a3d62',
+                        'texto-oscuro': '#4a3e4e',
+                        'texto-suave': '#735f78',
+                        'verde-online': '#10b981',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 20px 40px rgba(139, 107, 147, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'glow': '0 0 15px rgba(216, 180, 226, 0.4)',
+                        'glow-focus': '0 0 20px rgba(139, 107, 147, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8ecee;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(243, 209, 217, 0.6) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(230, 230, 250, 0.8) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(248, 236, 238, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(216, 180, 226, 0.5) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(243, 209, 217, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(216, 180, 226, 0.6);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 107, 147, 0.8);
+        }
+
+        /* Focus & Input Animation */
+        .input-animated {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .input-animated:focus {
+            background-color: #ffffff;
+            border-color: #8b6b93;
+            box-shadow: 0 0 12px rgba(139, 107, 147, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Button Ripple Effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        .ripple:active::after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+    </style>
+</head>
+<body class="min-h-screen w-screen flex flex-col p-3 sm:p-5 md:p-8 overflow-x-hidden text-texto-oscuro">
+
+    <div class="glass-container w-full max-w-5xl mx-auto rounded-2xl md:rounded-3xl shadow-glass flex flex-col overflow-hidden relative border border-white/80">
+        
+        <!-- Header Navigation Bar -->
+        <header class="h-16 px-4 md:px-8 border-b border-rosa-medio/50 flex items-center justify-between bg-white/50 backdrop-blur-md shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-lila-oscuro to-rosa-accent flex items-center justify-center text-white shadow-sm">
+                    <i class="fa-solid fa-user-doctor text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-lila-profundo leading-tight">PrevenApp</h1>
+                    <p class="text-[11px] font-semibold text-texto-suave">Gestión de Perfil Profesional</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <a href="#" class="px-3.5 py-1.5 rounded-xl bg-lila-suave/70 hover:bg-lila-medio/50 text-lila-profundo text-xs font-bold transition-all flex items-center gap-2 border border-lila-medio/40">
+                    <i class="fa-solid fa-arrow-left text-[11px]"></i>
+                    <span class="hidden sm:inline">Volver a Consultas</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Form Body Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto">
+
+            <!-- Profile Banner & Progress Bar -->
+            <div class="glass-card rounded-2xl p-4 sm:p-6 border border-rosa-medio/60 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden bg-gradient-to-r from-white/80 via-white/40 to-lila-suave/30">
+                <div class="flex items-center space-x-4 sm:space-x-5 w-full md:w-auto">
+                    
+                    <!-- Avatar Upload Zone -->
+                    <div class="relative group shrink-0">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-lila-medio/60 shadow-md relative bg-lila-suave/50 flex items-center justify-center">
+                            <img id="avatarPreview" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200&h=200" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <label for="avatarInput" class="absolute inset-0 bg-lila-profundo/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs cursor-pointer font-semibold gap-1">
+                            <i class="fa-solid fa-camera text-base"></i>
+                            <span>Cambiar</span>
+                        </label>
+                        <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewImage(event)">
+                        
+                        <!-- Verified Badge -->
+                        <span class="absolute -bottom-1 -right-1 w-7 h-7 bg-verde-online border-2 border-white rounded-full flex items-center justify-center text-white text-xs shadow-sm" title="Profesional Verificado">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </div>
+
+                    <!-- User Header Details -->
+                    <div class="space-y-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-base sm:text-xl font-bold text-lila-profundo truncate">
+                                {{ usuario.first_name|default:"Dra. Elena" }} {{ usuario.last_name|default:"Rostova" }}
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-lila-medio/40 text-lila-profundo border border-lila-medio/50 uppercase tracking-wide">
+                                Verificado
+                            </span>
+                        </div>
+                        <p class="text-xs text-texto-suave font-medium flex items-center gap-1.5">
+                            <i class="fa-regular fa-envelope text-lila-oscuro"></i>
+                            <span class="truncate">{{ usuario.email|default:"elena.rostova@prevenapp.med" }}</span>
+                        </p>
+                        <p class="text-[11px] text-lila-oscuro font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-id-card text-rosa-accent"></i>
+                            <span>ID de Usuario: @{{ usuario.username|default:"draelena_rostova" }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-64 bg-white/80 p-4 rounded-xl border border-rosa-medio/50 space-y-2 shadow-xs">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-lila-profundo flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-pie text-lila-oscuro"></i>
+                            Completitud del Perfil
+                        </span>
+                        <span id="completionPercentage" class="text-lila-oscuro">85%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-lila-suave/80 rounded-full overflow-hidden p-0.5 border border-lila-medio/30">
+                        <div id="progressBar" class="h-full bg-gradient-to-r from-rosa-accent to-lila-oscuro rounded-full transition-all duration-500" style="width: 85%;"></div>
+                    </div>
+                    <p class="text-[10px] text-texto-suave font-medium">Añada especialidades y biografía para alcanzar el 100%.</p>
+                </div>
+            </div>
+
+            <form id="profileForm" action="" method="POST" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Section 1: Informacion Profesional Principal -->
+                <div class="glass-card rounded-2xl p-5 md:p-6 space-y-5 border border-rosa-medio/60">
+                    <div class="flex items-center space-x-2 border-b border-rosa-medio/40 pb-3">
+                        <i class="fa-solid fa-user-md text-lila-oscuro text-lg"></i>
+                        <h3 class="text-sm font-bold text-lila-profundo uppercase tracking-wider">Información Profesional</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        
+                        <!-- Título o Especialidad -->
+                        <div class="space-y-1.5">
+                            <label for="titulo_profesional" class="block text-xs font-bold text-texto-oscuro">
+                                Título o Especialidad Médica <span class="text-rosa-accent">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-texto-suave/60 text-xs">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                </span>
+                                <input 
+                                    type="text" 
+                                    id="titulo_profesional" 
+                                    name="titulo_profesional" 
+                                    value="{{ profesional.titulo_profesional|default:'Cardióloga General' }}" 
+                                    required 
+                                    oninput="updateProgress()"
+                                    placeholder="Ej. Cardióloga, Médica Pediatra" 
+                                    class="input-animated w-full pl-10 pr-4 py-2.5 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Cédula o Colegiatura Profesional -->
+                        <div class="space-y-1.5">
+                            <label for="colegiatura" class="block text-xs font-bold text-texto-oscuro">
+                                Colegiatura / Cédula Profesional <span class="text-rosa-accent">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-texto-suave/60 text-xs">
+                                    <i class="fa-solid fa-award"></i>
+                                </span>
+                                <input 
+                                    type="text" 
+                                    id="colegiatura" 
+                                    name="colegiatura" 
+                                    value="{{ profesional.colegiatura|default:'CMP-84920-CARD' }}" 
+                                    required 
+                                    oninput="updateProgress()"
+                                    placeholder="Ej. CMP-123456" 
+                                    class="input-animated w-full pl-10 pr-4 py-2.5 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Años de Experiencia -->
+                        <div class="space-y-1.5">
+                            <label for="experiencia" class="block text-xs font-bold text-texto-oscuro">
+                                Años de Experiencia <span class="text-rosa-accent">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-texto-suave/60 text-xs">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </span>
+                                <input 
+                                    type="number" 
+                                    id="experiencia" 
+                                    name="experiencia" 
+                                    min="0" 
+                                    max="60" 
+                                    value="{{ profesional.experiencia|default:'12' }}" 
+                                    required 
+                                    oninput="updateProgress()"
+                                    placeholder="Ej. 10" 
+                                    class="input-animated w-full pl-10 pr-4 py-2.5 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Teléfono de Contacto Profesional -->
+                        <div class="space-y-1.5">
+                            <label for="telefono" class="block text-xs font-bold text-texto-oscuro">
+                                Teléfono de Consulta / WhatsAPP
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-texto-suave/60 text-xs">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+                                <input 
+                                    type="tel" 
+                                    id="telefono" 
+                                    name="telefono" 
+                                    value="{{ profesional.telefono|default:'+57 312 456 7890' }}" 
+                                    oninput="updateProgress()"
+                                    placeholder="+57 300 000 0000" 
+                                    class="input-animated w-full pl-10 pr-4 py-2.5 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                                >
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 md:p-6 space-y-4 border border-rosa-medio/60">
+                    <div class="flex items-center space-x-2 border-b border-rosa-medio/40 pb-3">
+                        <i class="fa-solid fa-tags text-lila-oscuro text-lg"></i>
+                        <h3 class="text-sm font-bold text-lila-profundo uppercase tracking-wider">Áreas de Atención y Especialidades</h3>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-xs font-bold text-texto-oscuro">
+                            Especialidades Destacadas (Presione Enter o coma para añadir)
+                        </label>
+
+                        <!-- Tag Input Field & Tag Pills -->
+                        <div class="p-2.5 bg-white/80 border border-rosa-medio/80 rounded-xl flex flex-wrap gap-2 items-center focus-within:ring-2 focus-within:ring-lila-medio/50 transition-all">
+                            <div id="tagsContainer" class="flex flex-wrap gap-2 items-center">
+                                <span class="tag-pill px-3 py-1 bg-lila-suave border border-lila-medio/60 text-lila-profundo text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-2xs">
+                                    Salud Cardiovascular
+                                    <button type="button" onclick="removeTag(this)" class="hover:text-rosa-accent transition-colors"><i class="fa-solid fa-xmark text-xs"></i></button>
+                                </span>
+                                <span class="tag-pill px-3 py-1 bg-lila-suave border border-lila-medio/60 text-lila-profundo text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-2xs">
+                                    Hipertensión Arterial
+                                    <button type="button" onclick="removeTag(this)" class="hover:text-rosa-accent transition-colors"><i class="fa-solid fa-xmark text-xs"></i></button>
+                                </span>
+                                <span class="tag-pill px-3 py-1 bg-lila-suave border border-lila-medio/60 text-lila-profundo text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-2xs">
+                                    Prevención Primaria
+                                    <button type="button" onclick="removeTag(this)" class="hover:text-rosa-accent transition-colors"><i class="fa-solid fa-xmark text-xs"></i></button>
+                                </span>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="tagInput" 
+                                placeholder="Escriba otra área..." 
+                                onkeydown="handleTagInput(event)"
+                                class="flex-1 min-w-[140px] bg-transparent text-xs sm:text-sm text-texto-oscuro focus:outline-none py-1 px-2"
+                            >
+                        </div>
+                        <p class="text-[11px] text-texto-suave">Ejemplos: Salud Mental, Telemedicina, Electrocardiografía, Geriatría.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 md:p-6 space-y-4 border border-rosa-medio/60">
+                    <div class="flex items-center justify-between border-b border-rosa-medio/40 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-feather-pointed text-lila-oscuro text-lg"></i>
+                            <h3 class="text-sm font-bold text-lila-profundo uppercase tracking-wider">Biografía Profesional</h3>
+                        </div>
+                        <span class="text-[11px] font-semibold text-texto-suave">
+                            <span id="charCount">0</span> / 500 caracteres
+                        </span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <textarea 
+                            id="biografia" 
+                            name="biografia" 
+                            rows="4" 
+                            maxlength="500"
+                            oninput="updateCharCounter(); updateProgress();"
+                            placeholder="Describa su trayectoria médica, enfoque de prevención y atención al paciente..." 
+                            class="input-animated w-full p-4 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none resize-none leading-relaxed"
+                        >{{ profesional.biografia|default:'Médica Cardióloga con más de 12 años de experiencia dedicada a la prevención de riesgo cardiovascular y atención integral de pacientes adultos. Enfoque preventivo y centrado en la persona.' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-2">
+                    <button 
+                        type="button" 
+                        onclick="resetFormDemo()"
+                        class="px-5 py-2.5 rounded-xl border border-rosa-medio text-texto-suave hover:bg-white/60 font-semibold text-xs sm:text-sm transition-all"
+                    >
+                        Descartar Cambios
+                    </button>
+
+                    <button 
+                        type="submit" 
+                        class="ripple px-7 py-2.5 bg-gradient-to-r from-lila-oscuro to-lila-profundo hover:from-lila-profundo hover:to-lila-oscuro text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-lg transition-all transform active:scale-95 flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-floppy-disk text-xs"></i>
+                        <span>Guardar Perfil</span>
+                    </button>
+                </div>
+
+            </form>
+        </main>
+    </div>
+
+    <div id="toastNotification" class="fixed bottom-6 right-6 translate-y-16 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-3 px-5 py-3.5 bg-lila-profundo text-white rounded-2xl shadow-xl border border-lila-medio/40">
+        <div class="w-8 h-8 rounded-xl bg-verde-online/20 flex items-center justify-center text-verde-online shrink-0">
+            <i class="fa-solid fa-check text-sm"></i>
+        </div>
+        <div>
+            <h4 class="text-xs font-bold text-white">¡Perfil Actualizado!</h4>
+            <p class="text-[11px] text-lila-suave">Los datos del profesional se han guardado exitosamente.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize character counter on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCharCounter();
+            updateProgress();
+        });
+
+        // Image Avatar Preview Logic
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                    showToast("Foto de perfil cargada", "Imagen actualizada para vista previa.");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Live Character Counter for Biography
+        function updateCharCounter() {
+            const textarea = document.getElementById('biografia');
+            const counter = document.getElementById('charCount');
+            counter.textContent = textarea.value.length;
+        }
+
+        // Tag Pills Logic
+        function handleTagInput(event) {
+            if (event.key === 'Enter' || event.key === ',') {
+                event.preventDefault();
+                const input = document.getElementById('tagInput');
+                const tagText = input.value.trim().replace(',', '');
+
+                if (tagText.length > 0) {
+                    addTagPill(tagText);
+                    input.value = '';
+                    updateProgress();
+                }
+            }
+        }
+
+        function addTagPill(text) {
+            const container = document.getElementById('tagsContainer');
+            const pill = document.createElement('span');
+            pill.className = "tag-pill px-3 py-1 bg-lila-suave border border-lila-medio/60 text-lila-profundo text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-2xs animate-fade-in";
+            pill.innerHTML = `
+                ${escapeHtml(text)}
+                <button type="button" onclick="removeTag(this)" class="hover:text-rosa-accent transition-colors"><i class="fa-solid fa-xmark text-xs"></i></button>
+            `;
+            container.appendChild(pill);
+        }
+
+        function removeTag(button) {
+            button.closest('.tag-pill').remove();
+            updateProgress();
+        }
+
+        // Profile Completion Score Logic
+        function updateProgress() {
+            const titulo = document.getElementById('titulo_profesional').value.trim();
+            const colegiatura = document.getElementById('colegiatura').value.trim();
+            const experiencia = document.getElementById('experiencia').value.trim();
+            const biografia = document.getElementById('biografia').value.trim();
+            const tagsCount = document.querySelectorAll('.tag-pill').length;
+
+            let score = 0;
+            if (titulo) score += 25;
+            if (colegiatura) score += 25;
+            if (experiencia) score += 15;
+            if (biografia.length > 20) score += 20;
+            if (tagsCount > 0) score += 15;
+
+            score = Math.min(score, 100);
+
+            document.getElementById('completionPercentage').textContent = score + '%';
+            document.getElementById('progressBar').style.width = score + '%';
+        }
+
+        // Toast Feedback System
+        function showToast(title, message) {
+            const toast = document.getElementById('toastNotification');
+            toast.querySelector('h4').textContent = title;
+            toast.querySelector('p').textContent = message;
+            
+            toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        // Form Submit Simulation
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            showToast("¡Perfil Guardado!", "Se han guardado todos los cambios del profesional.");
+        }
+
+        // Reset Demo Helper
+        function resetFormDemo() {
+            document.getElementById('profileForm').reset();
+            updateCharCounter();
+            updateProgress();
+            showToast("Cambios Descartados", "Se reestablecieron los valores iniciales del formulario.");
+        }
+
+        // Helper to escape HTML characters
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"']/g, function (s) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[s];
+            });
+        }
+    </script>
+</body>
+</html>

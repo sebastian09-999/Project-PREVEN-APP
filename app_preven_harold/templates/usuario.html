@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevenApp - Tu salud y tranquilidad, en tus manos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rosa-pastel': '#f8ecee',
+                        'rosa-medio': '#f3d1d9',
+                        'rosa-accent': '#f4a8bc',
+                        'lila-suave': '#e6e6fa',
+                        'lila-medio': '#d8b4e2',
+                        'lila-oscuro': '#8b6b93',
+                        'lila-profundo': '#5a3d62',
+                        'texto-oscuro': '#3d2e40',
+                        'texto-suave': '#735f78',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 20px 40px rgba(139, 107, 147, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'glow': '0 0 20px rgba(216, 180, 226, 0.5)',
+                        'btn-hover': '0 10px 20px -5px rgba(139, 107, 147, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8ecee;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(243, 209, 217, 0.6) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(230, 230, 250, 0.8) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(248, 236, 238, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(216, 180, 226, 0.5) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(243, 209, 217, 0.5);
+        }
+
+        .input-field {
+            transition: all 0.25s ease-in-out;
+        }
+
+        .input-field:focus-within {
+            box-shadow: 0 0 0 4px rgba(216, 180, 226, 0.35);
+            border-color: #8b6b93;
+        }
+
+        /* Floating background elements animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+            animation: floatSlow 7s ease-in-out 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-x-hidden text-texto-oscuro">
+
+    <div class="absolute top-12 left-10 w-64 h-64 bg-lila-medio/30 rounded-full filter blur-3xl pointer-events-none animate-float"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-rosa-medio/40 rounded-full filter blur-3xl pointer-events-none animate-float-delayed"></div>
+
+    <main class="w-full max-w-md relative z-10">
+        
+        <!-- Floating Health Badge -->
+        <div class="mb-6 flex justify-center">
+            <div class="glass-badge px-4 py-2 rounded-full shadow-sm flex items-center space-x-2 border text-xs font-semibold text-lila-oscuro animate-float">
+                <span class="flex h-2 w-2 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lila-oscuro opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-lila-oscuro"></span>
+                </span>
+                <i data-lucide="shield-check" class="w-4 h-4 text-lila-oscuro"></i>
+                <span>Plataforma Médica Preventiva & Securizada</span>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="glass-card rounded-3xl p-8 sm:p-10 shadow-glass border border-white/80 transition-all duration-300">
+            
+            <!-- Logo & Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-lila-oscuro via-lila-medio to-rosa-accent text-white shadow-md mb-4 group cursor-pointer hover:scale-105 transition-transform duration-300">
+                    <i data-lucide="heart-pulse" class="w-9 h-9 transform group-hover:scale-110 transition-transform"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight text-lila-profundo mb-1">PrevenApp</h1>
+                <p class="text-sm text-texto-suave font-medium">Tu salud y tranquilidad, en tus manos</p>
+            </div>
+
+            <!-- Toast Alert Message (Hidden by default) -->
+            <div id="toastMessage" class="hidden mb-6 p-3 rounded-xl bg-lila-suave/80 border border-lila-medio text-lila-profundo text-xs text-center font-medium animate-fade-in flex items-center justify-center space-x-2">
+                <i data-lucide="info" class="w-4 h-4 text-lila-oscuro"></i>
+                <span id="toastText">Mensaje de notificación</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5" novalidate>
+                
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-xs font-bold text-texto-oscuro uppercase tracking-wider mb-2">
+                        Correo Electrónico
+                    </label>
+                    <div class="relative input-field rounded-2xl border border-rosa-medio bg-white/80 focus-within:bg-white transition-all">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-lila-oscuro/60">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            placeholder="nombre@ejemplo.com"
+                            class="w-full pl-11 pr-4 py-3.5 text-sm bg-transparent border-none rounded-2xl focus:outline-none text-texto-oscuro placeholder-texto-suave/50 font-medium"
+                        >
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="password" class="block text-xs font-bold text-texto-oscuro uppercase tracking-wider">
+                            Contraseña
+                        </label>
+                        <a href="#" onclick="showToast('Se ha enviado un enlace de recuperación a tu correo.')" class="text-xs font-semibold text-lila-oscuro hover:text-lila-profundo hover:underline transition-colors">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+                    <div class="relative input-field rounded-2xl border border-rosa-medio bg-white/80 focus-within:bg-white transition-all">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-lila-oscuro/60">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            placeholder="••••••••••••"
+                            class="w-full pl-11 pr-11 py-3.5 text-sm bg-transparent border-none rounded-2xl focus:outline-none text-texto-oscuro placeholder-texto-suave/50 font-medium"
+                        >
+                        <button 
+                            type="button" 
+                            id="togglePassword" 
+                            onclick="togglePasswordVisibility()" 
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-lila-oscuro/60 hover:text-lila-oscuro focus:outline-none"
+                            aria-label="Mostrar u ocultar contraseña"
+                        >
+                            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Checkbox Remember Me -->
+                <div class="flex items-center justify-between pt-1">
+                    <label class="flex items-center space-x-2.5 cursor-pointer group">
+                        <input type="checkbox" class="w-4 h-4 rounded border-rosa-medio text-lila-oscuro focus:ring-lila-medio focus:ring-offset-0 cursor-pointer accent-lila-oscuro">
+                        <span class="text-xs font-medium text-texto-suave group-hover:text-texto-oscuro transition-colors">Recordar mi sesión</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-3.5 px-4 bg-gradient-to-r from-lila-oscuro to-lila-profundo hover:from-lila-profundo hover:to-lila-oscuro text-white font-bold text-sm rounded-2xl shadow-md hover:shadow-btn-hover active:scale-[0.99] transition-all duration-200 flex items-center justify-center space-x-2 mt-2 group"
+                >
+                    <span>Ingresar a mi cuenta</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                </button>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-rosa-medio/60"></div>
+                </div>
+                <div class="relative flex justify-center text-xs uppercase">
+                    <span class="bg-white/80 px-3 text-texto-suave font-semibold rounded-full border border-rosa-medio/40">o continuar con</span>
+                </div>
+            </div>
+
+            <!-- Social Logins -->
+            <div class="grid grid-cols-2 gap-3">
+                <button 
+                    type="button" 
+                    onclick="showToast('Iniciando sesión con Google...')"
+                    class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-white/90 hover:bg-white border border-rosa-medio/80 rounded-2xl text-xs font-semibold text-texto-oscuro shadow-sm hover:shadow transition-all active:scale-[0.98]"
+                >
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.2 9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                        <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12s.7 2.3 1.9 4.7l3.7-2.9z"/>
+                        <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"/>
+                    </svg>
+                    <span>Google</span>
+                </button>
+
+                <button 
+                    type="button" 
+                    onclick="showToast('Iniciando sesión con Apple...')"
+                    class="flex items-center justify-center space-x-2 py-2.5 px-4 bg-white/90 hover:bg-white border border-rosa-medio/80 rounded-2xl text-xs font-semibold text-texto-oscuro shadow-sm hover:shadow transition-all active:scale-[0.98]"
+                >
+                    <i data-lucide="apple" class="w-4 h-4 text-texto-oscuro"></i>
+                    <span>Apple</span>
+                </button>
+            </div>
+
+            <!-- Footer Sign Up Link -->
+            <div class="mt-8 text-center">
+                <p class="text-xs text-texto-suave font-medium">
+                    ¿Aún no tienes una cuenta? 
+                    <a href="#" onclick="showToast('Redirigiendo a registro de usuario...')" class="font-bold text-lila-oscuro hover:text-lila-profundo hover:underline ml-1">
+                        Crear cuenta gratis
+                    </a>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Subtle Copyright / Legal -->
+        <div class="mt-6 text-center text-xs text-texto-suave/70">
+            <p>&copy; 2026 PrevenApp Health Technologies. Todos los derechos reservados.</p>
+        </div>
+
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Password visibility toggle logic
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // Show quick toast message helper
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            const toastText = document.getElementById('toastText');
+            toastText.textContent = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        // Form Submission logic mock
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showToast('Por favor completa todos los campos.');
+                return;
+            }
+
+            showToast('¡Bienvenido de nuevo! Autenticando...');
+        }
+    </script>
+</body>
+</html>
