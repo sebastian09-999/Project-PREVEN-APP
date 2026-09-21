@@ -61,6 +61,8 @@ class Actividad(models.Model):
     
     nombre = models.CharField(max_length=150, null=True, blank=True)
     categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, null=True, blank=True)
+    #Relaciónn N:N declarada usando ParticipacionActividad como tabla intermedia
+    participantes = models.ManyToManyField('Usuario', through='ParticipacionActividad', related_name='actividades')
     descripcion = models.TextField(null=True, blank=True)
     objetivos = models.TextField(null=True, blank=True)
     instrucciones = models.TextField(null=True, blank=True)
