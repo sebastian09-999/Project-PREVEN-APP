@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrevenApp - Categoría y Elementos</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rosa-pastel': '#f8ecee',
+                        'rosa-medio': '#f3d1d9',
+                        'rosa-accent': '#f4a8bc',
+                        'lila-suave': '#e6e6fa',
+                        'lila-medio': '#d8b4e2',
+                        'lila-oscuro': '#8b6b93',
+                        'lila-profundo': '#5a3d62',
+                        'texto-oscuro': '#4a3e4e',
+                        'texto-suave': '#735f78',
+                        'verde-exito': '#10b981',
+                        'ambar-alerta': '#f59e0b',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 20px 40px rgba(139, 107, 147, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'glow': '0 0 20px rgba(216, 180, 226, 0.4)',
+                        'glow-active': '0 0 25px rgba(139, 107, 147, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8ecee;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(243, 209, 217, 0.6) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(230, 230, 250, 0.8) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(248, 236, 238, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(216, 180, 226, 0.5) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(243, 209, 217, 0.6);
+        }
+
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(216, 180, 226, 0.7);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 107, 147, 0.9);
+        }
+
+        /* Input Animations */
+        .input-animated {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .input-animated:focus {
+            background-color: #ffffff;
+            border-color: #8b6b93;
+            box-shadow: 0 0 12px rgba(139, 107, 147, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Button Ripple */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        .ripple:active::after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+    </style>
+</head>
+<body class="min-h-screen w-screen flex flex-col p-3 sm:p-5 md:p-8 overflow-x-hidden text-texto-oscuro antialiased">
+
+    <div class="glass-container w-full max-w-7xl mx-auto rounded-2xl md:rounded-3xl shadow-glass flex flex-col overflow-hidden relative border border-white/80 min-h-[90vh]">
+        
+        <!-- Header Navigation Bar -->
+        <header class="h-16 md:h-20 px-4 md:px-8 border-b border-rosa-medio/50 flex items-center justify-between bg-white/60 backdrop-blur-md shrink-0 gap-4">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-tr from-lila-oscuro to-rosa-accent flex items-center justify-center text-white shadow-md shadow-lila-medio/40">
+                    <i class="fa-solid fa-heart-pulse text-lg md:text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base md:text-xl font-extrabold text-lila-profundo tracking-tight">PrevenApp</h1>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-lila-suave text-lila-profundo border border-lila-medio/50">
+                            v2.4
+                        </span>
+                    </div>
+                    <p class="text-[11px] font-semibold text-texto-suave">Gestión de Categorías y Elementos</p>
+                </div>
+            </div>
+
+            <!-- Category Switcher Dropdown & Quick Actions -->
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <select id="categorySelector" onchange="changeCategory(this.value)" class="pl-3.5 pr-8 py-2 rounded-xl bg-white/90 border border-rosa-medio/80 text-xs md:text-sm font-bold text-lila-profundo focus:outline-none focus:ring-2 focus:ring-lila-medio/60 shadow-xs appearance-none cursor-pointer">
+                        <option value="CAT-101" selected>Salud Cardiovascular (CAT-101)</option>
+                        <option value="CAT-102">Nutrición Preventiva (CAT-102)</option>
+                        <option value="CAT-103">Bienestar Mental (CAT-103)</option>
+                        <option value="CAT-104">Actividad Física (CAT-104)</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-xs text-lila-oscuro pointer-events-none"></i>
+                </div>
+
+                <a href="#" class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-lila-suave/80 hover:bg-lila-medio/50 text-lila-profundo text-xs font-bold transition-all border border-lila-medio/40">
+                    <i class="fa-solid fa-arrow-left text-[11px]"></i>
+                    <span>Volver al Menú</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 sm:p-6 md:p-8 space-y-6 overflow-y-auto">
+
+            <!-- Category Title & Banner Section -->
+            <div class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-7 border border-rosa-medio/60 relative overflow-hidden bg-gradient-to-r from-white/90 via-white/50 to-lila-suave/40 shadow-xs">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <span class="px-3 py-1 rounded-xl text-xs font-extrabold bg-lila-medio/40 text-lila-profundo border border-lila-medio/60 uppercase tracking-wider shadow-2xs">
+                                ID: <span id="displayCatId">{{ categoria.idCategoria|default:"CAT-101" }}</span>
+                            </span>
+                            <span class="px-3 py-1 rounded-xl text-xs font-extrabold bg-verde-exito/15 text-verde-exito border border-verde-exito/30 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-verde-exito animate-pulse"></span>
+                                Categoría Activa
+                            </span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-lila-profundo tracking-tight">
+                            Categoría: <span id="displayCatName">{{ categoria.nombre|default:"Salud Cardiovascular" }}</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-texto-suave leading-relaxed">
+                            Módulo de gestión integral de contenidos preventivos, guías clínicas asociadas y actividades de seguimiento del paciente.
+                        </p>
+                    </div>
+
+                    <!-- Progress Bar & Completion Card -->
+                    <div class="w-full lg:w-72 bg-white/80 p-4 sm:p-5 rounded-2xl border border-rosa-medio/60 space-y-3 shadow-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-lila-profundo flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-line text-lila-oscuro"></i>
+                                Avance de Actividades
+                            </span>
+                            <span id="overallPercentageText" class="text-xs font-extrabold text-lila-oscuro bg-lila-suave px-2 py-0.5 rounded-lg border border-lila-medio/40">
+                                67%
+                            </span>
+                        </div>
+                        <div class="w-full h-3 bg-lila-suave rounded-full overflow-hidden p-0.5 border border-lila-medio/30">
+                            <div id="overallProgressBar" class="h-full bg-gradient-to-r from-rosa-accent via-lila-oscuro to-lila-profundo rounded-full transition-all duration-500" style="width: 67%;"></div>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-texto-suave font-medium">
+                            <span><strong id="completedCountText" class="text-lila-profundo">2</strong> de <strong id="totalActivitiesCountText" class="text-lila-profundo">3</strong> completadas</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+                
+                <!-- Stat Card 1 -->
+                <div class="glass-card p-4 rounded-2xl border border-rosa-medio/60 flex items-center space-x-3.5 shadow-2xs hover:shadow-md transition-all">
+                    <div class="w-11 h-11 rounded-xl bg-lila-suave text-lila-profundo flex items-center justify-center text-lg shrink-0 border border-lila-medio/40">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-texto-suave uppercase tracking-wider">Recursos</p>
+                        <h4 id="statTotalRecursos" class="text-xl sm:text-2xl font-black text-lila-profundo">3</h4>
+                    </div>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="glass-card p-4 rounded-2xl border border-rosa-medio/60 flex items-center space-x-3.5 shadow-2xs hover:shadow-md transition-all">
+                    <div class="w-11 h-11 rounded-xl bg-rosa-medio/50 text-lila-profundo flex items-center justify-center text-lg shrink-0 border border-rosa-medio">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-texto-suave uppercase tracking-wider">Actividades</p>
+                        <h4 id="statTotalActividades" class="text-xl sm:text-2xl font-black text-lila-profundo">3</h4>
+                    </div>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div class="glass-card p-4 rounded-2xl border border-rosa-medio/60 flex items-center space-x-3.5 shadow-2xs hover:shadow-md transition-all">
+                    <div class="w-11 h-11 rounded-xl bg-verde-exito/15 text-verde-exito flex items-center justify-center text-lg shrink-0 border border-verde-exito/30">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-texto-suave uppercase tracking-wider">Completadas</p>
+                        <h4 id="statCompletadas" class="text-xl sm:text-2xl font-black text-lila-profundo">2</h4>
+                    </div>
+                </div>
+
+                <!-- Stat Card 4 -->
+                <div class="glass-card p-4 rounded-2xl border border-rosa-medio/60 flex items-center space-x-3.5 shadow-2xs hover:shadow-md transition-all">
+                    <div class="w-11 h-11 rounded-xl bg-ambar-alerta/15 text-ambar-alerta flex items-center justify-center text-lg shrink-0 border border-ambar-alerta/30">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-texto-suave uppercase tracking-wider">Pendientes</p>
+                        <h4 id="statPendientes" class="text-xl sm:text-2xl font-black text-lila-profundo">1</h4>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="glass-card p-4 rounded-2xl border border-rosa-medio/60 flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <!-- Search Input -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-texto-suave"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        oninput="filterElements()" 
+                        placeholder="Buscar recursos o actividades..." 
+                        class="input-animated w-full pl-10 pr-4 py-2 bg-white/80 border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                    >
+                </div>
+
+                <!-- Type / Status Filter Tags -->
+                <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
+                    <button onclick="setFilter('ALL')" id="filterBtn-ALL" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-lila-profundo text-white shadow-xs">
+                        Todos
+                    </button>
+                    <button onclick="setFilter('RECURSOS')" id="filterBtn-RECURSOS" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white/80 text-texto-suave hover:bg-lila-suave border border-rosa-medio/60">
+                        Solo Recursos
+                    </button>
+                    <button onclick="setFilter('ACTIVIDADES')" id="filterBtn-ACTIVIDADES" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white/80 text-texto-suave hover:bg-lila-suave border border-rosa-medio/60">
+                        Solo Actividades
+                    </button>
+                </div>
+
+                <!-- Action Add Buttons -->
+                <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+                    <button 
+                        onclick="openAddModal('RECURSO')" 
+                        class="ripple px-3.5 py-2 rounded-xl bg-lila-suave hover:bg-lila-medio/60 text-lila-profundo font-bold text-xs transition-all border border-lila-medio/50 flex items-center gap-1.5 shadow-2xs"
+                    >
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span>Nuevo Recurso</span>
+                    </button>
+
+                    <button 
+                        onclick="openAddModal('ACTIVIDAD')" 
+                        class="ripple px-3.5 py-2 rounded-xl bg-gradient-to-r from-lila-oscuro to-lila-profundo hover:from-lila-profundo hover:to-lila-oscuro text-white font-bold text-xs transition-all shadow-md flex items-center gap-1.5"
+                    >
+                        <i class="fa-solid fa-circle-plus text-xs"></i>
+                        <span>Nueva Actividad</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Section 1: Recursos (1 a N) -->
+                <div id="sectionRecursos" class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 space-y-4 border border-rosa-medio/60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-rosa-medio/40 pb-3.5 mb-4">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-lila-suave flex items-center justify-center text-lila-profundo text-sm font-bold border border-lila-medio/40">
+                                    <i class="fa-solid fa-book-medical"></i>
+                                </div>
+                                <h3 class="text-sm md:text-base font-extrabold text-lila-profundo uppercase tracking-wider">Recursos Asociados</h3>
+                            </div>
+                            <span id="badgeCountRecursos" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-lila-medio/30 text-lila-profundo border border-lila-medio/40">
+                                3 Elementos
+                            </span>
+                        </div>
+
+                        <!-- Template Loop container for Jinja2/Django compatibility & Dynamic JS rendering -->
+                        <div id="recursosList" class="space-y-3">
+                            {% for rec in recursos %}
+                            <div class="item-card p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs hover:shadow-xs group">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <div class="w-10 h-10 rounded-xl bg-lila-suave/80 text-lila-oscuro flex items-center justify-center text-sm shrink-0 border border-lila-medio/30">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate group-hover:text-lila-oscuro transition-colors">
+                                            {{ rec.nombre }}
+                                        </h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>{{ rec.Categoria_idCategoria }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-rosa-medio/40 text-lila-profundo border border-rosa-medio">
+                                        {{ rec.tipo }}
+                                    </span>
+                                    <button onclick="viewDetail('Recurso', '{{ rec.nombre }}')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <!-- Mock fallback list for browser preview if no template tags executed -->
+                            <div class="mock-recurso-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <div class="w-10 h-10 rounded-xl bg-lila-suave/80 text-lila-oscuro flex items-center justify-center text-sm shrink-0 border border-lila-medio/30">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Guía de Hipertensión Arterial 2026</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-rosa-medio/40 text-lila-profundo border border-rosa-medio">
+                                        PDF
+                                    </span>
+                                    <button onclick="viewDetail('Recurso', 'Guía de Hipertensión Arterial 2026')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mock-recurso-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <div class="w-10 h-10 rounded-xl bg-lila-suave/80 text-lila-oscuro flex items-center justify-center text-sm shrink-0 border border-lila-medio/30">
+                                        <i class="fa-solid fa-video"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Video Explicativo: Presión Arterial</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-rosa-medio/40 text-lila-profundo border border-rosa-medio">
+                                        Video
+                                    </span>
+                                    <button onclick="viewDetail('Recurso', 'Video Explicativo: Presión Arterial')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mock-recurso-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <div class="w-10 h-10 rounded-xl bg-lila-suave/80 text-lila-oscuro flex items-center justify-center text-sm shrink-0 border border-lila-medio/30">
+                                        <i class="fa-solid fa-headphones"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Podcast: Hábitos Cardiosaludables</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-rosa-medio/40 text-lila-profundo border border-rosa-medio">
+                                        Audio
+                                    </span>
+                                    <button onclick="viewDetail('Recurso', 'Podcast: Hábitos Cardiosaludables')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-rosa-medio/30 mt-4 flex justify-between items-center text-xs text-texto-suave">
+                        <span>Relación 1 a N con Categoria</span>
+                        <button onclick="openAddModal('RECURSO')" class="text-lila-oscuro hover:text-lila-profundo font-bold flex items-center gap-1">
+                            <span>+ Añadir Recurso</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Actividades (1 a N) -->
+                <div id="sectionActividades" class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 space-y-4 border border-rosa-medio/60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-rosa-medio/40 pb-3.5 mb-4">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-rosa-medio/50 flex items-center justify-center text-lila-profundo text-sm font-bold border border-rosa-medio">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                                <h3 class="text-sm md:text-base font-extrabold text-lila-profundo uppercase tracking-wider">Actividades Asociadas</h3>
+                            </div>
+                            <span id="badgeCountActividades" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-lila-medio/30 text-lila-profundo border border-lila-medio/40">
+                                3 Elementos
+                            </span>
+                        </div>
+
+                        <!-- Template Loop container for Jinja2/Django compatibility & Dynamic JS rendering -->
+                        <div id="actividadesList" class="space-y-3">
+                            {% for act in actividades %}
+                            <div class="item-card p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs hover:shadow-xs group">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <button onclick="toggleActivityStatus(this)" class="w-8 h-8 rounded-lg bg-verde-exito/20 text-verde-exito flex items-center justify-center text-xs shrink-0 border border-verde-exito/30 hover:scale-105 transition-transform" title="Cambiar Estado">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">
+                                            {{ act.titulo }}
+                                        </h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>{{ act.Categoria_idCategoria }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-verde-exito/15 text-verde-exito border border-verde-exito/30">
+                                        {{ act.estado }}
+                                    </span>
+                                    <button onclick="viewDetail('Actividad', '{{ act.titulo }}')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <!-- Mock fallback list for browser preview if no template tags executed -->
+                            <div class="mock-actividad-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group" data-status="Completado">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <button onclick="toggleActivityStatus(this)" class="w-8 h-8 rounded-lg bg-verde-exito/20 text-verde-exito flex items-center justify-center text-xs shrink-0 border border-verde-exito/30 hover:scale-105 transition-transform" title="Cambiar Estado">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Toma Diaria de Presión Arterial</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-verde-exito/15 text-verde-exito border border-verde-exito/30">
+                                        Completado
+                                    </span>
+                                    <button onclick="viewDetail('Actividad', 'Toma Diaria de Presión Arterial')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mock-actividad-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group" data-status="Completado">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <button onclick="toggleActivityStatus(this)" class="w-8 h-8 rounded-lg bg-verde-exito/20 text-verde-exito flex items-center justify-center text-xs shrink-0 border border-verde-exito/30 hover:scale-105 transition-transform" title="Cambiar Estado">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Registro de Caminata 30 mins</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-verde-exito/15 text-verde-exito border border-verde-exito/30">
+                                        Completado
+                                    </span>
+                                    <button onclick="viewDetail('Actividad', 'Registro de Caminata 30 mins')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mock-actividad-item p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group" data-status="Pendiente">
+                                <div class="flex items-center space-x-3 min-w-0">
+                                    <button onclick="toggleActivityStatus(this)" class="w-8 h-8 rounded-lg bg-ambar-alerta/20 text-ambar-alerta flex items-center justify-center text-xs shrink-0 border border-ambar-alerta/30 hover:scale-105 transition-transform" title="Cambiar Estado">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </button>
+                                    <div class="min-w-0">
+                                        <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate">Evaluación Nutricional Quincenal</h4>
+                                        <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                            <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                            <span>CAT-101</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-ambar-alerta/15 text-ambar-alerta border border-ambar-alerta/30">
+                                        Pendiente
+                                    </span>
+                                    <button onclick="viewDetail('Actividad', 'Evaluación Nutricional Quincenal')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-rosa-medio/30 mt-4 flex justify-between items-center text-xs text-texto-suave">
+                        <span>Relación 1 a N con Categoria</span>
+                        <button onclick="openAddModal('ACTIVIDAD')" class="text-lila-oscuro hover:text-lila-profundo font-bold flex items-center gap-1">
+                            <span>+ Añadir Actividad</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Add Element Dynamic Modal -->
+    <div id="addModal" class="fixed inset-0 bg-lila-profundo/40 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="glass-modal w-full max-w-md rounded-3xl p-6 shadow-glow border border-white/90 space-y-5 transform scale-95 transition-all duration-300" id="modalContainer">
+            
+            <div class="flex items-center justify-between border-b border-rosa-medio/40 pb-3">
+                <div class="flex items-center space-x-2.5">
+                    <div id="modalIcon" class="w-9 h-9 rounded-xl bg-lila-suave text-lila-profundo flex items-center justify-center text-sm font-bold border border-lila-medio/40">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <h3 id="modalTitle" class="text-base font-extrabold text-lila-profundo">Añadir Elemento</h3>
+                </div>
+                <button onclick="closeAddModal()" class="w-8 h-8 rounded-xl bg-rosa-pastel text-texto-suave hover:text-lila-profundo flex items-center justify-center text-xs transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="addForm" onsubmit="handleAddFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="modalType" value="RECURSO">
+
+                <div class="space-y-1.5">
+                    <label id="modalNameLabel" for="itemNameInput" class="block text-xs font-bold text-texto-oscuro">
+                        Nombre del Recurso
+                    </label>
+                    <input 
+                        type="text" 
+                        id="itemNameInput" 
+                        required 
+                        placeholder="Ej. Guía Preventiva 2026" 
+                        class="input-animated w-full px-3.5 py-2.5 bg-white border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none"
+                    >
+                </div>
+
+                <div class="space-y-1.5">
+                    <label id="modalMetaLabel" for="itemMetaInput" class="block text-xs font-bold text-texto-oscuro">
+                        Tipo / Categorización
+                    </label>
+                    <select id="itemMetaInput" class="w-full px-3.5 py-2.5 bg-white border border-rosa-medio/80 rounded-xl text-xs sm:text-sm text-texto-oscuro focus:outline-none font-medium">
+                        <!-- Populated by JS based on type -->
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-texto-oscuro">
+                        FK Categoría Asociada
+                    </label>
+                    <input 
+                        type="text" 
+                        id="modalCatFkDisplay" 
+                        readonly 
+                        value="CAT-101" 
+                        class="w-full px-3.5 py-2.5 bg-lila-suave/40 border border-lila-medio/40 rounded-xl text-xs sm:text-sm text-lila-profundo font-bold focus:outline-none cursor-not-allowed"
+                    >
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-3">
+                    <button 
+                        type="button" 
+                        onclick="closeAddModal()"
+                        class="px-4 py-2 rounded-xl border border-rosa-medio text-texto-suave hover:bg-white/60 font-semibold text-xs transition-all"
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="ripple px-5 py-2 bg-gradient-to-r from-lila-oscuro to-lila-profundo text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5"
+                    >
+                        <i class="fa-solid fa-check text-xs"></i>
+                        <span>Guardar Elemento</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Feedback System -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 translate-y-16 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-3 px-5 py-3.5 bg-lila-profundo text-white rounded-2xl shadow-xl border border-lila-medio/40">
+        <div id="toastIcon" class="w-8 h-8 rounded-xl bg-verde-exito/20 flex items-center justify-center text-verde-exito shrink-0">
+            <i class="fa-solid fa-check text-sm"></i>
+        </div>
+        <div>
+            <h4 id="toastTitle" class="text-xs font-bold text-white">¡Operación exitosa!</h4>
+            <p id="toastMessage" class="text-[11px] text-lila-suave">Los datos han sido actualizados en la categoría.</p>
+        </div>
+    </div>
+
+    <script>
+        // Category Data Mock Store
+        const categoriesData = {
+            'CAT-101': {
+                id: 'CAT-101',
+                nombre: 'Salud Cardiovascular',
+                recursos: [
+                    { id: 1, nombre: 'Guía de Hipertensión Arterial 2026', tipo: 'PDF', icon: 'fa-file-pdf' },
+                    { id: 2, nombre: 'Video Explicativo: Presión Arterial', tipo: 'Video', icon: 'fa-video' },
+                    { id: 3, nombre: 'Podcast: Hábitos Cardiosaludables', tipo: 'Audio', icon: 'fa-headphones' }
+                ],
+                actividades: [
+                    { id: 101, titulo: 'Toma Diaria de Presión Arterial', estado: 'Completado' },
+                    { id: 102, titulo: 'Registro de Caminata 30 mins', estado: 'Completado' },
+                    { id: 103, titulo: 'Evaluación Nutricional Quincenal', estado: 'Pendiente' }
+                ]
+            },
+            'CAT-102': {
+                id: 'CAT-102',
+                nombre: 'Nutrición Preventiva',
+                recursos: [
+                    { id: 4, nombre: 'Tabla Nutricional Hiposódica', tipo: 'Guía', icon: 'fa-file-lines' },
+                    { id: 5, nombre: 'Recetario Cardiosaludable', tipo: 'PDF', icon: 'fa-file-pdf' }
+                ],
+                actividades: [
+                    { id: 104, titulo: 'Planificador de Menú Semanal', estado: 'Pendiente' },
+                    { id: 105, titulo: 'Registro de Ingesta de Agua (2L)', estado: 'Completado' }
+                ]
+            },
+            'CAT-103': {
+                id: 'CAT-103',
+                nombre: 'Bienestar Mental',
+                recursos: [
+                    { id: 6, nombre: 'Técnicas de Respiración Guiada', tipo: 'Audio', icon: 'fa-headphones' }
+                ],
+                actividades: [
+                    { id: 106, titulo: 'Sesión Diario de Mindfulness (10 min)', estado: 'Pendiente' },
+                    { id: 107, titulo: 'Test de Nivel de Estrés Periódico', estado: 'Pendiente' }
+                ]
+            },
+            'CAT-104': {
+                id: 'CAT-104',
+                nombre: 'Actividad Física',
+                recursos: [
+                    { id: 7, nombre: 'Rutina de Ejercicios Aeróbicos', tipo: 'Video', icon: 'fa-video' }
+                ],
+                actividades: [
+                    { id: 108, titulo: 'Meta Diaria 8,000 Pasos', estado: 'Completado' }
+                ]
+            }
+        };
+
+        let currentCatId = 'CAT-101';
+        let currentFilterMode = 'ALL';
+
+        // Initialize state on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+        });
+
+        // Switch Active Category
+        function changeCategory(catId) {
+            currentCatId = catId;
+            document.getElementById('displayCatId').textContent = catId;
+            document.getElementById('displayCatName').textContent = categoriesData[catId].nombre;
+            renderDashboard();
+            showToast("Categoría Cambiada", `Ahora gestionando: ${categoriesData[catId].nombre}`);
+        }
+
+        // Render Recursos & Actividades Lists + Re-calculate Metrics
+        function renderDashboard() {
+            const cat = categoriesData[currentCatId];
+            const recursosList = document.getElementById('recursosList');
+            const actividadesList = document.getElementById('actividadesList');
+
+            // Render Recursos
+            recursosList.innerHTML = cat.recursos.map(rec => `
+                <div class="item-card p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-lila-suave/80 text-lila-oscuro flex items-center justify-center text-sm shrink-0 border border-lila-medio/30">
+                            <i class="fa-solid ${rec.icon || 'fa-file-lines'}"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate group-hover:text-lila-oscuro transition-colors">
+                                ${escapeHtml(rec.nombre)}
+                            </h4>
+                            <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                <span>${cat.id}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-rosa-medio/40 text-lila-profundo border border-rosa-medio">
+                            ${rec.tipo}
+                        </span>
+                        <button onclick="viewDetail('Recurso', '${escapeHtml(rec.nombre)}')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('') || '<div class="p-6 text-center text-xs text-texto-suave font-medium bg-white/40 rounded-xl border border-dashed border-rosa-medio">No hay recursos en esta categoría.</div>';
+
+            // Render Actividades
+            actividadesList.innerHTML = cat.actividades.map(act => {
+                const isDone = act.estado === 'Completado';
+                return `
+                <div class="item-card p-3.5 rounded-xl bg-white/80 border border-rosa-medio/60 hover:border-lila-medio transition-all flex items-center justify-between gap-3 shadow-2xs group">
+                    <div class="flex items-center space-x-3 min-w-0">
+                        <button onclick="toggleActivityStatusJS(${act.id})" class="w-8 h-8 rounded-lg ${isDone ? 'bg-verde-exito/20 text-verde-exito border-verde-exito/30' : 'bg-ambar-alerta/20 text-ambar-alerta border-ambar-alerta/30'} flex items-center justify-center text-xs shrink-0 border hover:scale-105 transition-transform" title="Cambiar Estado">
+                            <i class="fa-solid ${isDone ? 'fa-check' : 'fa-clock'}"></i>
+                        </button>
+                        <div class="min-w-0">
+                            <h4 class="text-xs sm:text-sm font-bold text-lila-profundo truncate ${isDone ? 'line-through text-texto-suave/70' : ''}">
+                                ${escapeHtml(act.titulo)}
+                            </h4>
+                            <p class="text-[11px] text-texto-suave flex items-center gap-1 mt-0.5">
+                                <span class="font-medium text-lila-oscuro">FK Categoria:</span>
+                                <span>${cat.id}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${isDone ? 'bg-verde-exito/15 text-verde-exito border-verde-exito/30' : 'bg-ambar-alerta/15 text-ambar-alerta border-ambar-alerta/30'} border">
+                            ${act.estado}
+                        </span>
+                        <button onclick="viewDetail('Actividad', '${escapeHtml(act.titulo)}')" class="w-8 h-8 rounded-lg bg-lila-suave/50 hover:bg-lila-medio/50 text-lila-profundo flex items-center justify-center text-xs transition-colors" title="Ver Detalle">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('') || '<div class="p-6 text-center text-xs text-texto-suave font-medium bg-white/40 rounded-xl border border-dashed border-rosa-medio">No hay actividades en esta categoría.</div>';
+
+            updateMetrics();
+            filterElements();
+        }
+
+        // Update Counter Stats Cards & Progress
+        function updateMetrics() {
+            const cat = categoriesData[currentCatId];
+            const totalRecursos = cat.recursos.length;
+            const totalActividades = cat.actividades.length;
+            const completadas = cat.actividades.filter(a => a.estado === 'Completado').length;
+            const pendientes = totalActividades - completadas;
+            const pct = totalActividades > 0 ? Math.round((completadas / totalActividades) * 100) : 0;
+
+            document.getElementById('statTotalRecursos').textContent = totalRecursos;
+            document.getElementById('statTotalActividades').textContent = totalActividades;
+            document.getElementById('statCompletadas').textContent = completadas;
+            document.getElementById('statPendientes').textContent = pendientes;
+
+            document.getElementById('badgeCountRecursos').textContent = `${totalRecursos} Elemento${totalRecursos !== 1 ? 's' : ''}`;
+            document.getElementById('badgeCountActividades').textContent = `${totalActividades} Elemento${totalActividades !== 1 ? 's' : ''}`;
+
+            document.getElementById('overallPercentageText').textContent = `${pct}%`;
+            document.getElementById('overallProgressBar').style.width = `${pct}%`;
+            document.getElementById('completedCountText').textContent = completadas;
+            document.getElementById('totalActivitiesCountText').textContent = totalActividades;
+        }
+
+        // Toggle Status for Dynamic Activities
+        function toggleActivityStatusJS(actId) {
+            const cat = categoriesData[currentCatId];
+            const act = cat.actividades.find(a => a.id === actId);
+            if (act) {
+                act.estado = act.estado === 'Completado' ? 'Pendiente' : 'Completado';
+                renderDashboard();
+                showToast("Estado Actualizado", `La actividad "${act.titulo}" ahora está ${act.estado}.`);
+            }
+        }
+
+        // Fallback for Jinja static items status toggle
+        function toggleActivityStatus(button) {
+            const card = button.closest('.item-card, .mock-actividad-item');
+            const badge = card.querySelector('.badge-status');
+            const title = card.querySelector('h4');
+            const icon = button.querySelector('i');
+
+            if (badge.textContent.trim() === 'Completado') {
+                badge.textContent = 'Pendiente';
+                badge.className = 'badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-ambar-alerta/15 text-ambar-alerta border border-ambar-alerta/30';
+                button.className = 'w-8 h-8 rounded-lg bg-ambar-alerta/20 text-ambar-alerta flex items-center justify-center text-xs shrink-0 border border-ambar-alerta/30 hover:scale-105 transition-transform';
+                icon.className = 'fa-solid fa-clock';
+                title.classList.remove('line-through', 'text-texto-suave/70');
+            } else {
+                badge.textContent = 'Completado';
+                badge.className = 'badge-status px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-verde-exito/15 text-verde-exito border border-verde-exito/30';
+                button.className = 'w-8 h-8 rounded-lg bg-verde-exito/20 text-verde-exito flex items-center justify-center text-xs shrink-0 border border-verde-exito/30 hover:scale-105 transition-transform';
+                icon.className = 'fa-solid fa-check';
+                title.classList.add('line-through', 'text-texto-suave/70');
+            }
+            showToast("Estado de Actividad", "Se ha cambiado el estado de la actividad seleccionada.");
+        }
+
+        // Search & Tag Filter Logic
+        function setFilter(mode) {
+            currentFilterMode = mode;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = 'filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white/80 text-texto-suave hover:bg-lila-suave border border-rosa-medio/60';
+            });
+
+            const activeBtn = document.getElementById(`filterBtn-${mode}`);
+            if (activeBtn) {
+                activeBtn.className = 'filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-lila-profundo text-white shadow-xs';
+            }
+
+            filterElements();
+        }
+
+        function filterElements() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const secRec = document.getElementById('sectionRecursos');
+            const secAct = document.getElementById('sectionActividades');
+
+            // Visibility based on filter tag
+            if (currentFilterMode === 'RECURSOS') {
+                secRec.classList.remove('hidden');
+                secAct.classList.add('hidden');
+            } else if (currentFilterMode === 'ACTIVIDADES') {
+                secRec.classList.add('hidden');
+                secAct.classList.remove('hidden');
+            } else {
+                secRec.classList.remove('hidden');
+                secAct.classList.remove('hidden');
+            }
+
+            // Text search in Recursos
+            document.querySelectorAll('#recursosList .item-card, #recursosList .mock-recurso-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+
+            // Text search in Actividades
+            document.querySelectorAll('#actividadesList .item-card, #actividadesList .mock-actividad-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        // Open Modal to Add Resource or Activity
+        function openAddModal(type) {
+            const modal = document.getElementById('addModal');
+            const container = document.getElementById('modalContainer');
+            const typeInput = document.getElementById('modalType');
+            const title = document.getElementById('modalTitle');
+            const nameLabel = document.getElementById('modalNameLabel');
+            const metaLabel = document.getElementById('modalMetaLabel');
+            const metaSelect = document.getElementById('itemMetaInput');
+
+            typeInput.value = type;
+            document.getElementById('modalCatFkDisplay').value = currentCatId;
+
+            if (type === 'RECURSO') {
+                title.textContent = 'Añadir Nuevo Recurso';
+                nameLabel.textContent = 'Nombre del Recurso';
+                metaLabel.textContent = 'Tipo de Recurso';
+                metaSelect.innerHTML = `
+                    <option value="PDF">Documento PDF</option>
+                    <option value="Video">Video Interactivo</option>
+                    <option value="Audio">Audio / Podcast</option>
+                    <option value="Guía">Guía Clínica</option>
+                `;
+            } else {
+                title.textContent = 'Añadir Nueva Actividad';
+                nameLabel.textContent = 'Título de la Actividad';
+                metaLabel.textContent = 'Estado Inicial';
+                metaSelect.innerHTML = `
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Completado">Completado</option>
+                `;
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('addModal');
+            const container = document.getElementById('modalContainer');
+
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('addForm').reset();
+        }
+
+        // Form Submit Handler
+        function handleAddFormSubmit(event) {
+            event.preventDefault();
+            const type = document.getElementById('modalType').value;
+            const name = document.getElementById('itemNameInput').value.trim();
+            const meta = document.getElementById('itemMetaInput').value;
+            const cat = categoriesData[currentCatId];
+
+            if (type === 'RECURSO') {
+                let icon = 'fa-file-lines';
+                if (meta === 'PDF') icon = 'fa-file-pdf';
+                if (meta === 'Video') icon = 'fa-video';
+                if (meta === 'Audio') icon = 'fa-headphones';
+
+                cat.recursos.push({
+                    id: Date.now(),
+                    nombre: name,
+                    tipo: meta,
+                    icon: icon
+                });
+                showToast("Recurso Creado", `Se ha agregado "${name}" correctamente.`);
+            } else {
+                cat.actividades.push({
+                    id: Date.now(),
+                    titulo: name,
+                    estado: meta
+                });
+                showToast("Actividad Creada", `Se ha programado "${name}" correctamente.`);
+            }
+
+            closeAddModal();
+            renderDashboard();
+        }
+
+        // View Element Detail Dialog
+        function viewDetail(type, title) {
+            showToast(`Detalle de ${type}`, `Cargando información sobre "${title}"...`);
+        }
+
+        // Toast Feedback System
+        function showToast(title, message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+
+            toast.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
+            }, 3200);
+        }
+
+        // Helper to escape HTML characters
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"']/g, function (s) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[s];
+            });
+        }
+    </script>
+</body>
+</html>

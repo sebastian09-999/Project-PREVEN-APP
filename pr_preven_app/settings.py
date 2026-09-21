@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'app_preven_app',
     'app_preven_juliana',
     'app_preven'
+    'app_preven_harold',
 ]
 
 MIDDLEWARE = [
