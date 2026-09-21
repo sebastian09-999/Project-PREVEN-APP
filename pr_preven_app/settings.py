@@ -63,7 +63,8 @@ TEMPLATES = [
                  'app_prevenapp/templates/app_prevenapp',
                  'app_preven_app',
                  'pr_preven_app/templates',
-                 'app_preven_juliana/templates/app_preven'],
+                 'app_preven_juliana/templates/app_preven',
+                 'app_preven_harold/templates/app_preven_harold'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
